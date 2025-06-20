@@ -1,7 +1,6 @@
-{{-- resources/views/admin/admin.blade.php --}}
-@extends('layout.app') {{-- layout.app berisi sidebar & struktur HTML utama --}}
+@extends('layout.app')
 
-@section('title', 'Dashboard Admin')
+@section('title', 'Dashboard')
 
 @section('content')
 <div class="container-fluid">
