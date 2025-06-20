@@ -83,7 +83,7 @@
   <div class="sidebar">
     <h4><i class="bi bi-book-half"></i> Admin</h4>
     <a href="#"><i class="bi bi-speedometer2"></i> Dashboard</a>
-    <a href="#"><i class="bi bi-tags"></i> Kategori Barang</a>
+    <a href="kategori.index"><i class="bi bi-tags"></i> Kategori Barang</a>
     <a href="#"><i class="bi bi-box-seam"></i> Barang</a>
     <a href="#"><i class="bi bi-clipboard-check"></i> Peminjaman</a>
     <a href="#"><i class="bi bi-arrow-counterclockwise"></i> Pengembalian</a>

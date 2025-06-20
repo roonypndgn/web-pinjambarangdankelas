@@ -2,14 +2,15 @@
 
 namespace App\Models;
 
+use App\Models\Kategori;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Barang extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
     protected $table = 'barangs';
     protected $primaryKey = 'id';
     protected $fillable = [
@@ -18,7 +19,7 @@ class Barang extends Model
         'merk',
         'deskripsi',
         'jumlah',
-        'cover'
+        'cover' 
     ];
     public function kategori(): BelongsTo
     {
