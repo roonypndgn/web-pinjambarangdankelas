@@ -9,11 +9,11 @@ class AdminController extends Controller
 {
     function index()
     {
-        return view('admin.admin');
+        return view('layouts.app');
     }
     function admin()
     {
-        return view('admin.admin');
+        return view('layouts.app');
     }
     function member()
     {

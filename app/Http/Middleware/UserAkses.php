@@ -5,21 +5,28 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Symfony\Component\HttpFoundation\Response;
 
 class UserAkses
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     */
-    public function handle(Request $request, Closure $next, $jenis): Response
+    public function handle(Request $request, Closure $next, ...$roles)
     {
-        //pengecekan
-        if (Auth::check() && Auth::user()->jenis == $jenis) {
-            return $next($request);
+        // Periksa apakah user sudah login
+        if (!Auth::check()) {
+            return redirect()->route('login');
         }
-        return redirect('admin');
+
+        $user = Auth::user();
+
+        // Periksa apakah role user termasuk yang diizinkan
+        foreach ($roles as $role) {
+            if ($user->jenis == $role) {
+                return $next($request);
+            }
+        }
+
+        // Jika role tidak sesuai
+        Auth::logout();
+        return redirect()->route('login')
+            ->withErrors(['akses' => 'Anda tidak memiliki akses ke halaman ini']);
     }
 }
