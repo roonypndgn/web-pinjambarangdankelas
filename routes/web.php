@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SesiController;
 use App\Http\Controllers\AdminController;
@@ -9,84 +10,62 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\PengembalianController;
 
-/* 
+/*
 |--------------------------------------------------------------------------
-| Guest Routes (Belum Login)
+| Guest Routes
 |--------------------------------------------------------------------------
 */
 Route::middleware(['guest'])->group(function () {
-    Route::get('/login', [SesiController::class, 'index'])->name('login');
-    Route::post('/login', [SesiController::class, 'login'])->name('login.post');
-    Route::redirect('/', '/dashboard')->name('home');
+    Route::get('/', [SesiController::class, 'index'])->name('login');
+    Route::post('/', [SesiController::class, 'login']);
 });
 
-/* 
+/*
 |--------------------------------------------------------------------------
-| Authenticated Routes (Sudah Login)
+| Authenticated Routes
 |--------------------------------------------------------------------------
 */
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 Route::middleware(['auth'])->group(function () {
-    // Dashboard Utama
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    
-    // Logout (better as POST for security)
+
+    // Logout
     Route::post('/logout', [SesiController::class, 'logout'])->name('logout');
-    
-    /* Admin Routes */
-    Route::prefix('admin')->name('admin.')->middleware(['userakses:admin'])->group(function () {
-        Route::get('/', [AdminController::class, 'index'])->name('dashboard');
-        Route::get('/members', [AdminController::class, 'member'])->name('members');
-        Route::get('/layouts', [AdminController::class, 'layouts'])->name('layouts');
-        
-        // Resource Routes with explicit naming
-        Route::resource('kategori', KategoriController::class)
-            ->except(['show'])
-            ->names([
-                'index' => 'kategori.index',
-                'create' => 'kategori.create',
-                'store' => 'kategori.store',
-                'edit' => 'kategori.edit',
-                'update' => 'kategori.update',
-                'destroy' => 'kategori.destroy'
-            ]);
-            
-        Route::resource('barang', BarangController::class)
-            ->except(['show'])
-            ->names([
-                'index' => 'barang.index',
-                // ... same pattern as above
-            ]);
+
+    // Default route setelah login (opsional, bisa diarahkan ke dashboard sesuai role)
+    Route::get('/admin', [AdminController::class, 'index']);
+
+    /*
+    |--------------------------------------------------------------------------
+    | Admin Routes
+    |--------------------------------------------------------------------------
+    */
+    Route::middleware(['userakses:admin'])->group(function () {
+        Route::get('/admin/admin', [AdminController::class, 'admin'])->name('admin.dashboard');
+
+        // Resource routes khusus admin
+        Route::resource('/kategori', KategoriController::class);
+        Route::resource('/barang', BarangController::class);
+        Route::resource('/peminjaman', PeminjamanController::class);
+        Route::resource('/pengembalian', PengembalianController::class);
     });
-    
-    /* Member Routes */
-    Route::prefix('member')->name('member.')->middleware(['userakses:member'])->group(function () {
-        Route::get('/dashboard', [DashboardController::class, 'member'])->name('dashboard');
-        
-        // More explicit route definitions
-        Route::prefix('peminjaman')->name('peminjaman.')->group(function () {
-            Route::get('/', [PeminjamanController::class, 'index'])->name('index');
-            Route::get('/create', [PeminjamanController::class, 'create'])->name('create');
-            Route::post('/', [PeminjamanController::class, 'store'])->name('store');
-        });
-        
-        // Similar for pengembalian
-        Route::prefix('pengembalian')->name('pengembalian.')->group(function () {
-            Route::get('/', [PengembalianController::class, 'index'])->name('index');
-            // ... other routes
-        });
+
+    /*
+    |--------------------------------------------------------------------------
+    | Member Routes
+    |--------------------------------------------------------------------------
+    */
+    Route::middleware(['userakses:member'])->group(function () {
+        Route::get('/admin/member', [AdminController::class, 'member'])->name('member.dashboard');
+
+        // Jika member diizinkan akses ini, tidak perlu diduplikasi
+        // Hapus jika hanya admin yang boleh akses
+        Route::resource('/peminjaman', PeminjamanController::class);
+        Route::resource('/pengembalian', PengembalianController::class);
     });
-    
-    /* Shared Routes */
-    Route::get('/peminjaman/{peminjaman}', [PeminjamanController::class, 'show'])
-        ->name('peminjaman.show');
-        
-    Route::get('/pengembalian/{pengembalian}', [PengembalianController::class, 'show'])
-        ->name('pengembalian.show');
 });
 
-/* Fallback Route */
-Route::fallback(function () {
-    return auth()->check() 
-        ? redirect()->route('dashboard') 
-        : redirect()->route('login');
-})->name('fallback');
+/*
+|--------------------------------------------------------------------------
+| Redirect Default
+|--------------------------------------------------------------------------
+*/
