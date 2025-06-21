@@ -132,6 +132,9 @@
     <a href="{{ route('admin.dashboard.admin') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
       <i class="bi bi-speedometer2"></i> Dashboard
     </a>
+    <a href="{{ route('admin.member.index') }}" class="{{ request()->routeIs('admin.member.*') ? 'active' : '' }}">
+      <i class="bi bi-people"></i> Member
+    </a>
     <a href="{{ route('admin.kategori.index') }}" class="{{ request()->routeIs('admin.kategori.*') ? 'active' : '' }}">
       <i class="bi bi-tags"></i> Kategori Barang
     </a>
