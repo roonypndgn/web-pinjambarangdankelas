@@ -12,4 +12,9 @@ class Kategori extends Model
     protected $primaryKey = 'id';
     protected $fillable = ['id','nama','deskripsi'];
 
+     // Relasi ke model User
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

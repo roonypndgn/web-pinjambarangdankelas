@@ -14,7 +14,7 @@ class PengembalianController extends Controller
     public function index()
     {
         $pengembalians = Pengembalian::all();
-        return view('pengembalian.index', compact('pengembalians'));
+        return view('admin.pengembalian.index', compact('pengembalians'));
     }
 
     public function create()

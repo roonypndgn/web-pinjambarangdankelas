@@ -9,13 +9,14 @@ class KategoriController extends Controller
 {
     public function index()
     {
-        $kategoris = Kategori::all();
-        return view('kategori.index', compact('kategoris'));
-    }
+    $kategoris = Kategori::latest()->paginate(10);
+    $recentCategories = Kategori::with('user')->latest()->take(5)->get();
+    
+    return view('admin.kategori.index', compact('kategoris', 'recentCategories'));}
 
     public function create()
     {
-        return view('kategori.create');
+        return view('admin.kategori.create');
     }
 
     public function store(Request $request)
@@ -26,13 +27,13 @@ class KategoriController extends Controller
         ]);
 
         Kategori::create($request->all());
-        return redirect()->route('kategori.index')->with('success', 'Kategori berhasil ditambahkan!');
+        return redirect()->route('admin.kategori.index')->with('success', 'Kategori berhasil ditambahkan!');
     }
 
     public function edit($id)
     {
         $kategori = Kategori::findOrFail($id);
-        return view('kategori.edit', compact('kategori'));
+        return view('admin.kategori.edit', compact('kategori'));
     }
 
     public function update(Request $request, $id)
@@ -45,7 +46,7 @@ class KategoriController extends Controller
         $kategori = Kategori::findOrFail($id);
         $kategori->update($request->all());
 
-        return redirect()->route('kategori.index')->with('success', 'Kategori berhasil diupdate!');
+        return redirect()->route('admin.kategori.index')->with('success', 'Kategori berhasil diupdate!');
     }
 
     // KategoriController.php
@@ -53,7 +54,7 @@ class KategoriController extends Controller
     {
     $kategori = Kategori::findOrFail($id);
     $kategori->delete();
-    
-    return redirect()->route('kategori.index')->with('success', 'Kategori berhasil dihapus');
+
+    return redirect()->route('admin.kategori.index')->with('success', 'Kategori berhasil dihapus');
     }
 }

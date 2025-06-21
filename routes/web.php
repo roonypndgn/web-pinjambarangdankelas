@@ -34,34 +34,35 @@ Route::middleware(['auth'])->group(function () {
     // Default route setelah login (opsional, bisa diarahkan ke dashboard sesuai role)
     Route::get('/admin', [AdminController::class, 'index']);
 
-    /*
+     /*
     |--------------------------------------------------------------------------
     | Admin Routes
     |--------------------------------------------------------------------------
     */
-    Route::middleware(['userakses:admin'])->group(function () {
-        Route::get('/admin/admin', [AdminController::class, 'admin'])->name('admin.dashboard');
-
-        // Resource routes khusus admin
-        Route::resource('/kategori', KategoriController::class);
-        Route::resource('/barang', BarangController::class);
-        Route::resource('/peminjaman', PeminjamanController::class);
-        Route::resource('/pengembalian', PengembalianController::class);
-    });
+    Route::middleware(['userakses:admin'])
+        ->prefix('admin')
+        ->name('admin.')
+        ->group(function () {
+            Route::get('/dashboard', [AdminController::class, 'admin'])->name('dashboard.admin');
+            Route::resource('/kategori', KategoriController::class);
+            Route::resource('/barang', BarangController::class);
+            Route::resource('/peminjaman', PeminjamanController::class);
+            Route::resource('/pengembalian', PengembalianController::class);
+        });
 
     /*
     |--------------------------------------------------------------------------
     | Member Routes
     |--------------------------------------------------------------------------
     */
-    Route::middleware(['userakses:member'])->group(function () {
-        Route::get('/admin/member', [AdminController::class, 'member'])->name('member.dashboard');
-
-        // Jika member diizinkan akses ini, tidak perlu diduplikasi
-        // Hapus jika hanya admin yang boleh akses
-        Route::resource('/peminjaman', PeminjamanController::class);
-        Route::resource('/pengembalian', PengembalianController::class);
-    });
+    Route::middleware(['userakses:member'])
+        ->prefix('member')
+        ->name('member.')
+        ->group(function () {
+            Route::get('/dashboard', [AdminController::class, 'member'])->name('dashboard');
+            Route::resource('/peminjaman', PeminjamanController::class);
+            Route::resource('/pengembalian', PengembalianController::class);
+        });
 });
 
 /*

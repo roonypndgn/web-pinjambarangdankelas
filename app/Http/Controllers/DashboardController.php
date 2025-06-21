@@ -10,7 +10,7 @@ class DashboardController extends Controller
     {
        if (Auth::user()->jenis == 'admin') {
         // Tampilkan dashboard admin
-        return view('dashboard.admin');
+        return view('admin.dashboard.admin');
     } else {
         // Redirect ke dashboard member
         return redirect()->route('member.dashboard');

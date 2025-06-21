@@ -28,9 +28,9 @@ class SesiController extends Controller
         ];
         if(Auth::attempt($infologin)){
             if(Auth::user()->jenis =='admin'){
-                return redirect('/admin/admin');
+                return redirect()->route('admin.dashboard.admin');
             }elseif(Auth::user()->jenis =='member'){
-                return redirect('/admin/member');
+                return redirect('/layout/member');
             }    
         }else{
             return redirect('')->withErrors('Username dan password salah')->withInput();

@@ -1,0 +1,111 @@
+/* Style untuk card */
+.barang-card {
+    border-radius: 0.5rem;
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+    margin-bottom: 1.5rem;
+}
+
+.barang-card .card-header {
+    border-radius: 0.5rem 0.5rem 0 0 !important;
+    padding: 1rem 1.35rem;
+    background-color: #4e73df;
+    color: white;
+}
+
+/* Style untuk tabel */
+.barang-table {
+    width: 100%;
+    margin-bottom: 1rem;
+    color: #212529;
+}
+
+.barang-table th {
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+    background-color: #f8f9fc;
+}
+
+.barang-table td, .barang-table th {
+    padding: 0.75rem;
+    vertical-align: middle;
+    border-top: 1px solid #e3e6f0;
+}
+
+.barang-table tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+/* Style untuk gambar */
+.barang-img-thumbnail {
+    border-radius: 0.25rem;
+    border: 1px solid #e3e6f0;
+    padding: 0.25rem;
+    max-width: 60px;
+    height: auto;
+}
+
+/* Style untuk tombol */
+.barang-btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    line-height: 1.5;
+    border-radius: 0.2rem;
+}
+
+/* Style untuk badge stok */
+.barang-stock-badge {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.35em 0.65em;
+}
+
+/* Style untuk alert */
+.barang-alert {
+    position: relative;
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: 0.35rem;
+}
+
+.barang-alert-success {
+    color: #1cc88a;
+    background-color: #d1f3e5;
+    border-color: #b8efd8;
+}
+
+/* Style untuk pagination */
+.barang-pagination {
+    display: flex;
+    padding-left: 0;
+    list-style: none;
+    border-radius: 0.35rem;
+}
+
+.barang-pagination .page-item.active .page-link {
+    z-index: 1;
+    color: #fff;
+    background-color: #4e73df;
+    border-color: #4e73df;
+}
+
+.barang-pagination .page-link {
+    position: relative;
+    display: block;
+    padding: 0.5rem 0.75rem;
+    margin-left: -1px;
+    line-height: 1.25;
+    color: #4e73df;
+    background-color: #fff;
+    border: 1px solid #dddfeb;
+}
+
+.barang-pagination .page-link:hover {
+    z-index: 2;
+    color: #224abe;
+    text-decoration: none;
+    background-color: #eaecf4;
+    border-color: #dddfeb;
+}

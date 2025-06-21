@@ -15,9 +15,10 @@ class BarangController extends Controller
     public function index()
     {
         $barangs = Barang::with('kategori')->latest()->paginate(10);
-        
-        return view('barang.index', compact('barangs'));
-    }
+    $kategoris = \App\Models\Kategori::all(); // Tambahkan baris ini
+
+    return view('admin.barang.index', compact('barangs', 'kategoris'));
+}
 
     /**
      * Show the form for creating a new resource.
@@ -25,7 +26,7 @@ class BarangController extends Controller
     public function create()
     {
         $kategoris = Kategori::all();
-        return view('barang.create', compact('kategoris'));
+        return view('admin.barang.create', compact('kategoris'));
     }
 
     /**
@@ -47,7 +48,7 @@ class BarangController extends Controller
 
         Barang::create($validated);
 
-        return redirect()->route('barang.index')
+        return redirect()->route('admin.barang.index')
                          ->with('success', 'Produk berhasil ditambahkan');
     }
 
@@ -56,7 +57,7 @@ class BarangController extends Controller
      */
     public function show(Barang $barang)
     {
-        return view('barang.show', compact('barang'));
+        return view('admin.barang.show', compact('barang'));
     }
 
     /**
@@ -65,7 +66,7 @@ class BarangController extends Controller
     public function edit(Barang $barang)
     {
         $kategoris = Kategori::all();
-        return view('barang.edit', compact('barang', 'kategoris'));
+        return view('admin.barang.edit', compact('barang', 'kategoris'));
     }
 
     /**
@@ -91,7 +92,7 @@ class BarangController extends Controller
 
         $barang->update($validated);
 
-        return redirect()->route('barang.index')
+        return redirect()->route('admin.barang.index')
                          ->with('success', 'Produk berhasil diperbarui');
     }
 
@@ -107,7 +108,7 @@ class BarangController extends Controller
 
         $barang->delete();
 
-        return redirect()->route('barang.index')
+        return redirect()->route('admin.barang.index')
                          ->with('success', 'Produk berhasil dihapus');
     }
 }

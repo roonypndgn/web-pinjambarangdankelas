@@ -1,4 +1,4 @@
-@extends('layout.app')
+@extends('layout.admin')
 
 @section('title', 'Data Peminjaman')
 
@@ -54,7 +54,7 @@
         </td>
         <td>
           <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#modalEdit{{ $p->id }}">Edit</button>
-          <form action="{{ route('peminjaman.destroy', $p->id) }}" method="POST" style="display:inline-block">
+          <form action="{{ route('admin.peminjaman.destroy', $p->id) }}" method="POST" style="display:inline-block">
             @csrf
             @method('DELETE')
             <button class="btn btn-danger btn-sm" onclick="return confirm('Hapus data ini?')">Hapus</button>
@@ -73,7 +73,7 @@
 <!-- Modal Tambah -->
 <div class="modal fade" id="modalTambah" tabindex="-1">
   <div class="modal-dialog">
-    <form action="{{ route('peminjaman.store') }}" method="POST" class="modal-content">
+    <form action="{{ route('admin.peminjaman.store') }}" method="POST" class="modal-content">
       @csrf
       <div class="modal-header">
         <h5 class="modal-title">Tambah Peminjaman</h5>
@@ -124,7 +124,7 @@
 @foreach($peminjamans as $p)
 <div class="modal fade" id="modalEdit{{ $p->id }}" tabindex="-1">
   <div class="modal-dialog">
-    <form action="{{ route('peminjaman.update', $p->id) }}" method="POST" class="modal-content">
+    <form action="{{ route('admin.peminjaman.update', $p->id) }}" method="POST" class="modal-content">
       @csrf
       @method('PUT')
       <div class="modal-header">

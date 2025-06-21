@@ -13,7 +13,7 @@ class PeminjamanController extends Controller
     public function index()
     {
         $peminjamans = Pinjam::latest()->get();
-        return view('peminjaman.index', compact('peminjamans'));
+        return view('admin.peminjaman.index', compact('peminjamans'));
     }
 
     // Simpan data baru
