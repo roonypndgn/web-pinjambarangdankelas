@@ -9,6 +9,7 @@ use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\PengembalianController;
+use App\Http\Controllers\MemberController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,6 +45,7 @@ Route::middleware(['auth'])->group(function () {
         ->name('admin.')
         ->group(function () {
             Route::get('/dashboard', [AdminController::class, 'admin'])->name('dashboard.admin');
+            Route::resource('/member', MemberController::class);
             Route::resource('/kategori', KategoriController::class);
             Route::resource('/barang', BarangController::class);
             Route::resource('/peminjaman', PeminjamanController::class);
