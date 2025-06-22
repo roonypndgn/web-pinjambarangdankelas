@@ -10,11 +10,9 @@ class MemberController extends Controller
 {
     public function index()
     {
-        $members = User::where('jenis', 'member')->get();
-        
-        $recentMembers = User::where('jenis', 'member')->latest()->take(5)->get(); // <--- Tambahan
+        $members = \App\Models\User::where('jenis', 'member')->latest()->get();
+        $recentMembers = \App\Models\User::where('jenis', 'member')->latest()->take(5)->get();
         return view('admin.member.index', compact('members', 'recentMembers'));
-        
     }
 
     public function create()
@@ -28,7 +26,7 @@ class MemberController extends Controller
             'nama' => 'required|string|max:255',
             'alamat' => 'nullable|string',
             'telepon' => 'nullable|string|max:20',
-            'email' => 'required|email|unique:users',
+            'email' => 'required|unique:users',
             'password' => 'required|string|min:6',
         ]);
 
@@ -73,6 +71,6 @@ class MemberController extends Controller
     public function destroy(User $member)
     {
         $member->delete();
-        return redirect()->route('admin.member.destroy')->with('success', 'Member berhasil dihapus!');
+       return redirect()->route('admin.member.index')->with('success', 'Member berhasil dihapus!');
     }
 }

@@ -16,9 +16,13 @@ use App\Http\Controllers\MemberController;
 | Guest Routes
 |--------------------------------------------------------------------------
 */
+
 Route::middleware(['guest'])->group(function () {
-    Route::get('/', [SesiController::class, 'index'])->name('login');
-    Route::post('/', [SesiController::class, 'login']);
+    Route::get('/', function () {
+        return view('landing_page.index');
+    })->name('landing');
+    Route::get('/login', [SesiController::class, 'index'])->name('login');
+    Route::post('/login', [SesiController::class, 'login']);
 });
 
 /*
