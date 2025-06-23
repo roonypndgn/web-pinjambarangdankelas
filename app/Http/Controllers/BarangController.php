@@ -15,9 +15,9 @@ class BarangController extends Controller
     public function index()
     {
         $barangs = Barang::with('kategori')->latest()->paginate(10);
-    $kategoris = \App\Models\Kategori::all(); // Tambahkan baris ini
-
-    return view('admin.barang.index', compact('barangs', 'kategoris'));
+        $kategoris = \App\Models\Kategori::all(); // Tambahkan baris ini
+        
+        return view('admin.barang.index', compact('barangs', 'kategoris'));
 }
 
     /**

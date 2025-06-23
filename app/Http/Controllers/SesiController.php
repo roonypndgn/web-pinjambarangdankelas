@@ -30,7 +30,7 @@ class SesiController extends Controller
             if(Auth::user()->jenis =='admin'){
                 return redirect()->route('admin.dashboard.admin');
             }elseif(Auth::user()->jenis =='member'){
-                return redirect('/layout/member');
+                return redirect()->route('member.dashboard.index');
             }    
         }else{
             return redirect('')->withErrors('Username dan password salah')->withInput();
@@ -40,6 +40,6 @@ class SesiController extends Controller
     function logout()
     {
         Auth::logout();
-        return redirect('');
+        return redirect()->route('login');
     }
 }

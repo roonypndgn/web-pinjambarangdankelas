@@ -15,13 +15,11 @@ return new class extends Migration
     {
         Schema::create('pinjams', function (Blueprint $table) {
             $table->id();
-            $table->foreignId(User::class);
-            $table->foreignId(Barang::class);
+            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('barang_id')->constrained('barangs');
             $table->date('tgl_pinjam')->nullable();
-            $table->date('tgl_kembali')->nullable();
             $table->time('time_pinjam')->nullable();
-            $table->time('time_kembali')->nullable();
-            $table->enum('status', ['pinjam', 'kembali'])->nullable();   
+            $table->enum('status', ['pinjam'])->nullable();   
             $table->timestamps();
             $table->softDeletes();
         });

@@ -111,10 +111,10 @@
                         @forelse($recentPeminjamans as $peminjaman)
                         <div class="list-group-item list-group-item-action">
                             <div class="d-flex w-100 justify-content-between">
-                                <h6 class="mb-1">{{ $peminjaman->barang->nama }}</h6>
+                                <h6 class="mb-1">{{ $peminjaman->barang->merk }}</h6>
                                 <small>{{ $peminjaman->created_at->diffForHumans() }}</small>
                             </div>
-                            <p class="mb-1">Dipinjam oleh: {{ $peminjaman->user->name }}</p>
+                            <p class="mb-1">Dipinjam oleh: {{ $peminjaman->user->nama }}</p>
                             <small class="text-muted">
                                 Kode: {{ $peminjaman->barang->kode_barang }} |
                                 Status:
@@ -217,7 +217,7 @@
                         <select class="form-select select2" id="user_id_edit{{ $peminjaman->id }}" name="user_id" required>
                             @foreach($members as $member)
                                 <option value="{{ $member->id }}" {{ $peminjaman->user_id == $member->id ? 'selected' : '' }}>
-                                    {{ $member->name }}
+                                    {{ $member->nama }}
                                 </option>
                             @endforeach
                         </select>
@@ -227,7 +227,7 @@
                         <select class="form-select select2" id="barang_id_edit{{ $peminjaman->id }}" name="barang_id" required>
                             @foreach($barangs as $barang)
                                 <option value="{{ $barang->id }}" {{ $peminjaman->barang_id == $barang->id ? 'selected' : '' }}>
-                                    {{ $barang->nama }}
+                                    {{ $barang->merk }}
                                 </option>
                             @endforeach
                         </select>

@@ -17,17 +17,15 @@ class Pinjam extends Model
         'barang_id',
         'user_id',
         'tgl_pinjam',
-        'tgl_kembali',
         'time_pinjam',
-        'time_kembali',
         'status'
     ];
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
     public function barang(): BelongsTo
     {
-        return $this->belongsTo(Barang::class);
+        return $this->belongsTo(Barang::class, 'barang_id');
     }
 }

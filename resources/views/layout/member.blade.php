@@ -194,7 +194,7 @@
     <div class="container-fluid">
       <a class="navbar-brand" href="#">
         <img src="https://admin.methodist.ac.id/cdn/Image/LOGO/komputer.png" alt="Logo">
-        <span>pinjamBarang</span>
+        <span>pinjamFikom</span>
       </a>
 
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-expanded="false">
@@ -204,12 +204,12 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav me-auto">
           <li class="nav-item">
-            <a class="nav-link active" href="#">
+            <a href="{{ route('member.dashboard.index') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
               <i class="bi bi-speedometer2 me-1"></i> Dashboard
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a href="{{ route('member.barang.index') }}" class="{{ request()->routeIs('member.barang.index') ? 'active' : '' }}">
               <i class="bi bi-box-seam me-1"></i> Katalog Barang
             </a>
           </li>

@@ -5,11 +5,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SesiController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BarangController;
+use App\Http\Controllers\MemberController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PeminjamanController;
+use App\Http\Controllers\MemberBarangController;
 use App\Http\Controllers\PengembalianController;
-use App\Http\Controllers\MemberController;
+use App\Http\Controllers\MemberDashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -65,7 +67,8 @@ Route::middleware(['auth'])->group(function () {
         ->prefix('member')
         ->name('member.')
         ->group(function () {
-            Route::get('/dashboard', [AdminController::class, 'member'])->name('dashboard');
+            Route::get('/dashboard', [MemberDashboardController::class, 'index'])->name('dashboard.index');
+            Route::get('/barang', [MemberBarangController::class, 'index'])->name('barang.index');
             Route::resource('/peminjaman', PeminjamanController::class);
             Route::resource('/pengembalian', PengembalianController::class);
         });
