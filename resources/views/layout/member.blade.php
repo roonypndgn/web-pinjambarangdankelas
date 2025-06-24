@@ -219,7 +219,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="{{ route('member.pengembalian.index') }}">
               <i class="bi bi-arrow-counterclockwise me-1"></i> Pengembalian
             </a>
           </li>
@@ -244,7 +244,7 @@
           <!-- Profil -->
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown">
-              <div class="me-2 d-none d-sm-inline">John Doe</div>
+              <div class="me-2 d-none d-sm-inline">{{ Auth::user()->nama }}</div>
               <i class="bi bi-person-circle"></i>
             </a>
             <ul class="dropdown-menu dropdown-menu-end animate__animated animate__fadeIn">

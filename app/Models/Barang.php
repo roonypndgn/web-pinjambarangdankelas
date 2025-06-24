@@ -20,10 +20,14 @@ class Barang extends Model
         'deskripsi',
         'status',
         'jumlah',
-        'cover' 
+        'cover'
     ];
     public function kategori(): BelongsTo
     {
-        return $this->belongsTo(Kategori::class); 
+        return $this->belongsTo(Kategori::class);
     }
+    public function peminjamans()
+{
+    return $this->hasMany(\App\Models\Pinjam::class, 'barang_id');
+}
 }
