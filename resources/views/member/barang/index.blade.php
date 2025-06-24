@@ -77,9 +77,14 @@
         <div class="card border-0 shadow-sm h-100" style="background-color: var(--card-bg);">
           <!-- Badge Stok -->
           <div class="position-absolute top-0 end-0 m-2">
-            <span class="badge {{ $barang->jumlah > 0 ? 'bg-success' : 'bg-danger' }}">
-              {{ $barang->jumlah > 0 ? 'Tersedia' : 'Habis' }}
-            </span>
+            <span class="badge
+              @if($barang->status == 'tersedia') bg-success
+              @elseif($barang->status == 'dipinjam') bg-warning text-dark
+              @elseif($barang->status == 'rusak') bg-danger
+              @else bg-secondary
+              @endif">
+              {{ ucfirst($barang->status) }}
+          </span>
           </div>
           
           <!-- Gambar Barang -->
@@ -129,8 +134,8 @@
               
               <a 
                 href="{{ route('member.peminjaman.create', ['barang_id' => $barang->id]) }}" 
-                class="btn btn-primary btn-sm {{ $barang->jumlah <= 0 ? 'disabled' : '' }}"
-              >
+                class="btn btn-primary btn-sm {{ $barang->status != 'tersedia' || $barang->jumlah <= 0 ? 'disabled' : '' }}"
+                >
                 <i class="bi bi-cart-plus me-1"></i> Pinjam
               </a>
             </div>
@@ -171,8 +176,13 @@
                   
                   <div class="mb-3">
                     <span class="badge bg-secondary">{{ $barang->kategori->nama }}</span>
-                    <span class="badge {{ $barang->jumlah > 0 ? 'bg-success' : 'bg-danger' }} ms-2">
-                      {{ $barang->jumlah > 0 ? 'Tersedia' : 'Habis' }}
+                    <span class="badge
+                        @if($barang->status == 'tersedia') bg-success
+                        @elseif($barang->status == 'dipinjam') bg-warning text-dark
+                        @elseif($barang->status == 'rusak') bg-danger
+                        @else bg-secondary
+                        @endif">
+                        {{ ucfirst($barang->status) }}
                     </span>
                   </div>
                   
@@ -194,8 +204,8 @@
                   
                   <div class="d-grid">
                     <a 
-                      href="{{ route('member.peminjaman.create', ['barang_id' => $barang->id]) }}" 
-                      class="btn btn-primary {{ $barang->jumlah <= 0 ? 'disabled' : '' }}"
+                      href="{{ route('member.peminjaman.index', ['barang_id' => $barang->id]) }}" 
+                      class="btn btn-primary {{ $barang->status != 'tersedia' || $barang->jumlah <= 0 ? 'disabled' : '' }}"
                     >
                       <i class="bi bi-cart-plus me-1"></i> Ajukan Peminjaman
                     </a>

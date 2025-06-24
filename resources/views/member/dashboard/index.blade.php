@@ -189,7 +189,7 @@
 
           <div class="tab-content mt-3" id="infoTabsContent">
             <!-- Tab Barang Populer -->
-
+          
             <!-- Tab Pengumuman -->
             <div class="tab-pane fade" id="pengumuman" role="tabpanel">
               <div class="alert alert-warning">
@@ -211,7 +211,10 @@
     </div>
   </div>
 </div>
-
+<div class="alert alert-info mt-4">
+            <i class="bi bi-lightbulb me-2"></i>
+            Tips: Selalu cek status peminjaman Anda secara berkala untuk menghindari keterlambatan pengembalian.
+          </div>
 <!-- Modal Quick Peminjaman -->
 <div class="modal fade" id="quickPinjamModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog">

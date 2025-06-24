@@ -244,12 +244,15 @@
           <!-- Profil -->
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown">
-              <div class="me-2 d-none d-sm-inline">{{ Auth::user()->nama }}</div>
-              <i class="bi bi-person-circle"></i>
+                <div class="me-2 d-none d-sm-inline">{{ Auth::user()->nama }}</div>
+                @if(Auth::user()->foto)
+                    <img src="{{ asset('storage/' . Auth::user()->foto) }}" class="rounded-circle" width="32" height="32" style="object-fit:cover;" alt="Foto Profil">
+                @else
+                    <img src="https://ui-avatars.com/api/?name={{ urlencode($user->nama) }}" class="rounded-circle shadow" width="32" height="32" style="object-fit: cover;" alt="Default Avatar">
+                @endif
             </a>
             <ul class="dropdown-menu dropdown-menu-end animate__animated animate__fadeIn">
-              <li><a class="dropdown-item" href="#"><i class="bi bi-person me-2"></i> Profil</a></li>
-              <li><a class="dropdown-item" href="#"><i class="bi bi-gear me-2"></i> Pengaturan</a></li>
+              <li><a class="dropdown-item" href="{{ route('member.dashboard.profile') }}"><i class="bi bi-person me-2"></i> Profil</a></li>
               <li><hr class="dropdown-divider"></li>
               <li>
                 <form action="{{ route('logout') }}" method="POST">

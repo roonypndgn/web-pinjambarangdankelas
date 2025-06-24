@@ -23,14 +23,14 @@ class MemberDashboardController extends Controller
         $barangTersedia = Barang::where('status', 'tersedia')->count();
 
         $harusDikembalikan = Pinjam::where('user_id', $user->id)
-            ->where('status', 'dipinjam')
-            ->where('tgl_kembali', '<=', now()->addDays(2))
-            ->count();
+        ->where('status', 'dipinjam')
+        ->where('tgl_kembali', '<=', now())
+        ->count();
 
         $riwayatPeminjaman = Pinjam::where('user_id', $user->id)
             ->where('status', 'selesai')
             ->count();
-
+        
         // Barang Populer
         $barangPopuler = Barang::withCount('peminjamans')
             ->orderBy('peminjaman_count', 'desc')
@@ -38,12 +38,12 @@ class MemberDashboardController extends Controller
             ->get();
 
         // Peminjaman Aktif
-        $peminjamanAktifList = Pinjam::with('barangs')
-            ->where('user_id', $user->id)
-            ->whereIn('status', ['dipinjam', 'proses'])
-            ->orderBy('tgl_pinjam', 'desc')
-            ->take(3)
-            ->get();
+        $peminjamanAktifList = Pinjam::with('barang')
+        ->where('user_id', $user->id)
+        ->whereIn('status', ['dipinjam', 'proses'])
+        ->orderBy('tgl_pinjam', 'desc')
+        ->take(3)
+        ->get();
 
         // Kategori untuk shortcut
         $kategoriPopuler = Kategori::withCount('barangs')
@@ -61,15 +61,6 @@ class MemberDashboardController extends Controller
             'kategoriPopuler'
         ));
     }
-    public function riwayat()
-{
-    $user = auth()->user();
-    $riwayat = Pinjam::where('user_id', $user->id)
-        ->where('status', 'selesai')
-        ->latest()
-        ->get();
-
-    return view('member.peminjaman.index', compact('riwayat'));
-}
+    
 
 }
