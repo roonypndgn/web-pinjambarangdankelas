@@ -39,6 +39,7 @@ class BarangController extends Controller
             'merk' => 'required|string|max:255',
             'deskripsi' => 'required|string',
             'jumlah' => 'required|integer|min:0',
+            'status' => 'required|string|in:tersedia,dipinjam,rusak,hilang',
             'cover' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
@@ -79,6 +80,7 @@ class BarangController extends Controller
             'merk' => 'required|string|max:255',
             'deskripsi' => 'required|string',
             'jumlah' => 'required|integer|min:0',
+            'status' => 'required|string|in:tersedia,dipinjam,rusak,hilang',
             'cover' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 

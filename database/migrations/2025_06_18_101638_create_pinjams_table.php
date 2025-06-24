@@ -14,15 +14,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('pinjams', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained('users');
-            $table->foreignId('barang_id')->constrained('barangs');
-            $table->date('tgl_pinjam')->nullable();
-            $table->time('time_pinjam')->nullable();
-            $table->enum('status', ['pinjam'])->nullable();   
-            $table->timestamps();
-            $table->softDeletes();
-        });
+        $table->id();
+        $table->foreignId('user_id')->constrained('users');
+        $table->foreignId('barang_id')->constrained('barangs');
+        $table->date('tgl_pinjam')->nullable();
+        $table->time('time_pinjam')->nullable();
+        $table->enum('status', ['pending', 'approved', 'rejected', 'pinjam', 'selesai'])->default('pending');
+        $table->text('admin_notes')->nullable();
+        $table->timestamps();
+        $table->softDeletes();
+});
     }
 
     /**

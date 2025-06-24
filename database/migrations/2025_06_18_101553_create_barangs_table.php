@@ -18,6 +18,7 @@ return new class extends Migration
             $table->text('merk')->nullable();
             $table->text('deskripsi')->nullable();
             $table->string('jumlah')->nullable();
+            $table->string('status')->default('tersedia');
             $table->text('cover');
             $table->timestamps();
             $table->softDeletes();
@@ -30,5 +31,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('barangs');
+       
     }
 };

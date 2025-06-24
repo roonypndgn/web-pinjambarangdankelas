@@ -30,6 +30,7 @@
                             <th scope="col">Kategori</th>
                             <th scope="col">Merk</th>
                             <th scope="col">Deskripsi</th>
+                            <th scope="col" class="text-center">Status</th>
                             <th scope="col" class="text-center">Stok</th>
                             <th scope="col" width="10%">Gambar</th>
                             <th scope="col" width="15%" class="text-center">Aksi</th>
@@ -44,6 +45,11 @@
                                 <strong>{{ $barang->merk }}</strong>
                             </td>
                             <td>{{ Str::limit($barang->deskripsi, 50) }}</td>
+                            <td class="text-center">
+                                <span class="badge @if($barang->status == 'tersedia') bg-success @elseif($barang->status == 'dipinjam') bg-warning text-dark @elseif($barang->status == 'rusak') bg-danger @else bg-secondary @endif">
+                                    {{ ucfirst($barang->status) }}
+                                </span>
+                            </td>
                             <td class="text-center">
                                 <span class="badge @if($barang->jumlah > 20) bg-success @elseif($barang->jumlah > 0) bg-warning text-dark @else bg-danger @endif">
                                     {{ $barang->jumlah }}
@@ -107,6 +113,15 @@
                                 <div class="mb-3">
                                     <label for="deskripsi" class="form-label">Deskripsi</label>
                                     <textarea name="deskripsi" class="form-control" required></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="status" class="form-label">Status</label>
+                                    <select name="status" class="form-control" required>
+                                        <option value="tersedia" selected>Tersedia</option>
+                                        <option value="dipinjam">Dipinjam</option>
+                                        <option value="rusak">Rusak</option>
+                                        <option value="hilang">Hilang</option>
+                                    </select>
                                 </div>
                                 <div class="mb-3">
                                     <label for="jumlah" class="form-label">Jumlah</label>
@@ -218,6 +233,15 @@
                                 <div class="mb-3">
                                     <label for="deskripsi" class="form-label">Deskripsi</label>
                                     <textarea name="deskripsi" class="form-control" required>{{ $barang->deskripsi }}</textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="status" class="form-label">Status</label>
+                                    <select name="status" class="form-control" required>
+                                        <option value="tersedia" {{ $barang->status == 'tersedia' ? 'selected' : '' }}>Tersedia</option>
+                                        <option value="dipinjam" {{ $barang->status == 'dipinjam' ? 'selected' : '' }}>Dipinjam</option>
+                                        <option value="rusak" {{ $barang->status == 'rusak' ? 'selected' : '' }}>Rusak</option>
+                                        <option value="hilang" {{ $barang->status == 'hilang' ? 'selected' : '' }}>Hilang</option>
+                                    </select>
                                 </div>
                                 <div class="mb-3">
                                     <label for="jumlah" class="form-label">Jumlah</label>

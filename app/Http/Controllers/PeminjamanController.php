@@ -11,24 +11,48 @@ use Illuminate\Support\Facades\Validator;
 class PeminjamanController extends Controller
 {
     /**
-     * Menampilkan daftar peminjaman
+     * Menampilkan daftar semua peminjaman
      */
     public function index()
     {
-        $peminjamans = Pinjam::with(['user', 'barang'])
+        $peminjamans = Pinjam::with(['user', 'barang'])->latest()->get();
+        // Peminjaman yang menunggu persetujuan (dari member)
+        $pendingPeminjamans = Pinjam::with(['user', 'barang'])
+            ->where('status', 'pending')
             ->latest()
-            ->paginate(10);
-
+            ->paginate(5, ['*'], 'pending_page');
+        
+        // Peminjaman aktif (baik dari admin maupun yang sudah disetujui)
+        $activePeminjamans = Pinjam::with(['user', 'barang'])
+            ->where('status', 'pinjam')
+            ->latest()
+            ->paginate(5, ['*'], 'active_page');
+        
+        // Peminjaman yang sudah selesai
+        $completedPeminjamans = Pinjam::with(['user', 'barang'])
+            ->where('status', 'selesai')
+            ->latest()
+            ->paginate(5, ['*'], 'completed_page');
+        
+        // Peminjaman yang ditolak
+        $rejectedPeminjamans = Pinjam::with(['user', 'barang'])
+            ->where('status', 'rejected')
+            ->latest()
+            ->paginate(5, ['*'], 'rejected_page');
         $recentPeminjamans = Pinjam::with(['user', 'barang'])
-            ->latest()
-            ->take(5)
-            ->get();
-
-        $members = User::where('jenis', 'member')->get(); // Hanya ambil member
+        ->latest()
+        ->take(5)
+        ->get();
+        // Data untuk form tambah cepat
+        $members = User::where('jenis', 'member')->get();
         $barangs = Barang::all();
-
+        
         return view('admin.peminjaman.index', compact(
             'peminjamans',
+            'pendingPeminjamans',
+            'activePeminjamans',
+            'completedPeminjamans',
+            'rejectedPeminjamans',
             'recentPeminjamans',
             'members',
             'barangs'
@@ -36,18 +60,18 @@ class PeminjamanController extends Controller
     }
 
     /**
-     * Menampilkan form tambah peminjaman
+     * Menampilkan form tambah peminjaman langsung oleh admin
      */
     public function create()
     {
-        $members = User::where('jenis', 'member')->get(); // Hanya ambil member
-        $barangs = Barang::where('status', 'tersedia')->get(); // Hanya barang tersedia
-
+        $members = User::where('jenis', 'member')->get();
+        $barangs = Barang::where('status', 'tersedia')->get();
+        
         return view('admin.peminjaman.create', compact('members', 'barangs'));
     }
 
     /**
-     * Menyimpan data peminjaman baru
+     * Menyimpan peminjaman langsung oleh admin
      */
     public function store(Request $request)
     {
@@ -56,9 +80,10 @@ class PeminjamanController extends Controller
             'user_id' => 'required|integer|exists:users,id',
             'tgl_pinjam' => 'required|date|after_or_equal:today',
             'time_pinjam' => 'required',
-            'status' => 'required|in:pinjam'
         ], [
-            'tgl_pinjam.after_or_equal' => 'Tanggal pinjam tidak boleh sebelum hari ini'
+            'tgl_pinjam.after_or_equal' => 'Tanggal pinjam tidak boleh sebelum hari ini',
+            'barang_id.exists' => 'Barang yang dipilih tidak valid',
+            'user_id.exists' => 'Member yang dipilih tidak valid'
         ]);
 
         if ($validator->fails()) {
@@ -68,49 +93,75 @@ class PeminjamanController extends Controller
         }
 
         try {
+            // Cek ketersediaan barang
+            $barang = Barang::findOrFail($request->barang_id);
+            if ($barang->status != 'tersedia') {
+                return redirect()->back()
+                    ->with('error', 'Barang tidak tersedia untuk dipinjam')
+                    ->withInput();
+            }
+
+            // Buat peminjaman langsung dengan status 'pinjam'
             Pinjam::create([
                 'user_id' => $request->user_id,
                 'barang_id' => $request->barang_id,
                 'tgl_pinjam' => $request->tgl_pinjam,
                 'time_pinjam' => $request->time_pinjam,
-                'status' => 'pinjam'
+                'status' => 'pinjam' // Langsung aktif tanpa persetujuan
             ]);
 
-            Barang::where('id', $request->barang_id)
-                ->update(['status' => 'dipinjam']);
+            // Update status barang
+            $barang->update(['status' => 'dipinjam']);
 
-            return redirect()->route('admin.peminjaman.index')->with('success', 'Data berhasil ditambahkan');
+            return redirect()->route('admin.peminjaman.index')
+                ->with('success', 'Peminjaman berhasil ditambahkan langsung.');
 
         } catch (\Exception $e) {
             return redirect()->back()
-                ->with('error', 'Gagal menambahkan data: ' . $e->getMessage())
+                ->with('error', 'Gagal menambahkan peminjaman: ' . $e->getMessage())
                 ->withInput();
         }
     }
 
     /**
-     * Menampilkan form edit peminjaman
+     * Menyetujui peminjaman dari member
      */
-    public function edit($id)
+    public function approve($id)
     {
-        $peminjaman = Pinjam::findOrFail($id);
-        $members = User::where('jenis', 'member')->get();
-        $barangs = Barang::all();
+        try {
+            $peminjaman = Pinjam::findOrFail($id);
+            
+            // Validasi status
+            if ($peminjaman->status != 'pending') {
+                return redirect()->back()
+                    ->with('error', 'Peminjaman ini sudah diproses sebelumnya.');
+            }
 
-        return view('admin.peminjaman.edit', compact('peminjaman', 'members', 'barangs'));
+            // Cek ketersediaan barang
+            if ($peminjaman->barang->status != 'tersedia') {
+                return redirect()->back()
+                    ->with('error', 'Barang tidak tersedia untuk dipinjam');
+            }
+
+            // Update status peminjaman
+            $peminjaman->update(['status' => 'approved']);
+
+            return redirect()->route('admin.peminjaman.index')
+                ->with('success', 'Peminjaman berhasil disetujui.');
+
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->with('error', 'Gagal menyetujui peminjaman: ' . $e->getMessage());
+        }
     }
 
     /**
-     * Mengupdate data peminjaman
+     * Menolak peminjaman dari member
      */
-    public function update(Request $request, $id)
+    public function reject(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'barang_id' => 'required|integer|exists:barangs,id',
-            'user_id' => 'required|integer|exists:users,id',
-            'tgl_pinjam' => 'required|date',
-            'time_pinjam' => 'required',
-            'status' => 'required|in:pinjam'
+            'admin_notes' => 'required|string|max:255'
         ]);
 
         if ($validator->fails()) {
@@ -121,34 +172,115 @@ class PeminjamanController extends Controller
 
         try {
             $peminjaman = Pinjam::findOrFail($id);
-            $oldBarangId = $peminjaman->barang_id;
-
-            $peminjaman->update([
-                'user_id' => $request->user_id,
-                'barang_id' => $request->barang_id,
-                'tgl_pinjam' => $request->tgl_pinjam,
-                'time_pinjam' => $request->time_pinjam,
-                'status' => $request->status
-            ]);
-
-            if ($oldBarangId != $request->barang_id) {
-                Barang::where('id', $oldBarangId)
-                    ->update(['status' => 'tersedia']);
+            
+            // Validasi status
+            if ($peminjaman->status != 'pending') {
+                return redirect()->back()
+                    ->with('error', 'Peminjaman ini sudah diproses sebelumnya.');
             }
 
-            Barang::where('id', $request->barang_id)
-                ->update(['status' => 'dipinjam']);
+            // Update status peminjaman
+            $peminjaman->update([
+                'status' => 'rejected',
+                'admin_notes' => $request->admin_notes
+            ]);
 
             return redirect()->route('admin.peminjaman.index')
-                ->with('success', 'Data peminjaman berhasil diperbarui!');
+                ->with('success', 'Peminjaman berhasil ditolak.');
 
         } catch (\Exception $e) {
             return redirect()->back()
-                ->with('error', 'Gagal memperbarui data: ' . $e->getMessage())
-                ->withInput();
+                ->with('error', 'Gagal menolak peminjaman: ' . $e->getMessage());
         }
     }
 
+    /**
+     * Mengkonfirmasi peminjaman yang sudah disetujui
+     */
+    public function confirm($id)
+    {
+        try {
+            $peminjaman = Pinjam::findOrFail($id);
+            
+            // Validasi status
+            if ($peminjaman->status != 'approved') {
+                return redirect()->back()
+                    ->with('error', 'Hanya peminjaman yang sudah disetujui yang bisa dikonfirmasi.');
+            }
+
+            // Cek ketersediaan barang
+            if ($peminjaman->barang->status != 'tersedia') {
+                return redirect()->back()
+                    ->with('error', 'Barang tidak tersedia untuk dipinjam');
+            }
+
+            // Update status peminjaman
+            $peminjaman->update(['status' => 'pinjam']);
+
+            // Update status barang
+            $peminjaman->barang->update(['status' => 'dipinjam']);
+
+            return redirect()->route('admin.peminjaman.index')
+                ->with('success', 'Peminjaman berhasil dikonfirmasi. Barang telah dipinjam.');
+
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->with('error', 'Gagal mengkonfirmasi peminjaman: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Menyelesaikan peminjaman
+     */
+    public function complete($id)
+    {
+        try {
+            $peminjaman = Pinjam::findOrFail($id);
+            
+            // Validasi status
+            if ($peminjaman->status != 'pinjam') {
+                return redirect()->back()
+                    ->with('error', 'Hanya peminjaman aktif yang bisa diselesaikan.');
+            }
+
+            // Update status peminjaman
+            $peminjaman->update(['status' => 'selesai']);
+
+            // Update status barang
+            $peminjaman->barang->update(['status' => 'tersedia']);
+
+            return redirect()->route('admin.peminjaman.index')
+                ->with('success', 'Peminjaman berhasil diselesaikan. Barang telah dikembalikan.');
+
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->with('error', 'Gagal menyelesaikan peminjaman: ' . $e->getMessage());
+        }
+    }
+    /**
+     * Menampilkan form edit peminjaman
+     */
+    public function update(Request $request, Pinjam $peminjaman)
+{
+    $request->validate([
+        'user_id' => 'required|exists:users,id',
+        'barang_id' => 'required|exists:barangs,id',
+        'tgl_pinjam' => 'required|date',
+        'time_pinjam' => 'required',
+        'status' => 'required'
+    ]);
+
+    $peminjaman->update([
+        'user_id' => $request->user_id,
+        'barang_id' => $request->barang_id,
+        'tgl_pinjam' => $request->tgl_pinjam,
+        'time_pinjam' => $request->time_pinjam,
+        'status' => $request->status,
+        'admin_notes' => $request->admin_notes ?? null,
+    ]);
+
+    return redirect()->route('admin.peminjaman.index')->with('success', 'Data peminjaman berhasil diupdate!');
+}
     /**
      * Menghapus data peminjaman
      */
@@ -156,12 +288,13 @@ class PeminjamanController extends Controller
     {
         try {
             $peminjaman = Pinjam::findOrFail($id);
-            $barangId = $peminjaman->barang_id;
+            
+            // Jika peminjaman aktif, kembalikan barang terlebih dahulu
+            if ($peminjaman->status == 'pinjam') {
+                $peminjaman->barang->update(['status' => 'tersedia']);
+            }
 
             $peminjaman->delete();
-
-            Barang::where('id', $barangId)
-                ->update(['status' => 'tersedia']);
 
             return redirect()->route('admin.peminjaman.index')
                 ->with('success', 'Data peminjaman berhasil dihapus!');

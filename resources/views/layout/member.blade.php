@@ -204,17 +204,17 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav me-auto">
           <li class="nav-item">
-            <a href="{{ route('member.dashboard.index') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
+            <a href="{{ route('member.dashboard.index') }}" class="nav-link">
               <i class="bi bi-speedometer2 me-1"></i> Dashboard
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{ route('member.barang.index') }}" class="{{ request()->routeIs('member.barang.index') ? 'active' : '' }}">
+            <a href="{{ route('member.barang.index') }}" class="nav-link">
               <i class="bi bi-box-seam me-1"></i> Katalog Barang
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="{{ route('member.peminjaman.index') }}">
               <i class="bi bi-clipboard-check me-1"></i> Peminjaman
             </a>
           </li>

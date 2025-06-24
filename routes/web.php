@@ -12,6 +12,7 @@ use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\MemberBarangController;
 use App\Http\Controllers\PengembalianController;
 use App\Http\Controllers\MemberDashboardController;
+use App\Http\Controllers\MemberPeminjamanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,6 +56,10 @@ Route::middleware(['auth'])->group(function () {
             Route::resource('/kategori', KategoriController::class);
             Route::resource('/barang', BarangController::class);
             Route::resource('/peminjaman', PeminjamanController::class);
+            Route::post('/peminjaman/{peminjaman}/complete', [PeminjamanController::class, 'complete'])->name('peminjaman.complete');
+            Route::post('/peminjaman/{peminjaman}/approve', [PeminjamanController::class, 'approve'])->name('peminjaman.approve');
+            Route::post('/peminjaman/{peminjaman}/reject', [PeminjamanController::class, 'reject'])->name('peminjaman.reject');
+            Route::post('/peminjaman/{peminjaman}/confirm', [PeminjamanController::class, 'confirm'])->name('peminjaman.confirm');
             Route::resource('/pengembalian', PengembalianController::class);
         });
 
@@ -69,7 +74,8 @@ Route::middleware(['auth'])->group(function () {
         ->group(function () {
             Route::get('/dashboard', [MemberDashboardController::class, 'index'])->name('dashboard.index');
             Route::get('/barang', [MemberBarangController::class, 'index'])->name('barang.index');
-            Route::resource('/peminjaman', PeminjamanController::class);
+            Route::resource('/peminjaman', MemberPeminjamanController::class);
+            Route::delete('/peminjaman/{peminjaman}/cancel', [MemberPeminjamanController::class, 'cancel'])->name('peminjaman.cancel');
             Route::resource('/pengembalian', PengembalianController::class);
         });
 });
