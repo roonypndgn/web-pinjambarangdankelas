@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('pengembalians', function (Blueprint $table) {
             $table->id();
-            $table->foreignId(Pinjam::class);
+            $table->foreignIdFor(Pinjam::class);
             $table->date('tgl_kembali')->nullable();
             $table->time('time_kembali')->nullable();
             $table->timestamps();

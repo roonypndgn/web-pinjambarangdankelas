@@ -60,7 +60,8 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/peminjaman/{peminjaman}/approve', [PeminjamanController::class, 'approve'])->name('peminjaman.approve');
             Route::post('/peminjaman/{peminjaman}/reject', [PeminjamanController::class, 'reject'])->name('peminjaman.reject');
             Route::post('/peminjaman/{peminjaman}/confirm', [PeminjamanController::class, 'confirm'])->name('peminjaman.confirm');
-            Route::resource('/pengembalian', PengembalianController::class);
+            Route::resource('pengembalian', PengembalianController::class)->except(['show']);
+            
         });
 
     /*
