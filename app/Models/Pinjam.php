@@ -10,16 +10,29 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Pinjam extends Model
 {
     use HasFactory;
-    protected $table = 'pinjams';
-    protected $primaryKey = 'id';
     protected $fillable = [
         'id',
         'barang_id',
         'user_id',
         'tgl_pinjam',
         'time_pinjam',
-        'status'
-    ];
+        'status',
+        'admin_notes'
+];
+        public function scopePending($query)
+    {
+        return $query->where('status', 'pending');
+    }
+
+    public function scopeApproved($query)
+    {
+        return $query->where('status', 'approved');
+    }
+
+    public function scopeRejected($query)
+    {
+        return $query->where('status', 'rejected');
+    }
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');

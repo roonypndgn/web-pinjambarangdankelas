@@ -1,4 +1,3 @@
-
 @extends('layout.admin')
 
 @section('title', 'Manajemen Peminjaman Barang')
@@ -28,69 +27,100 @@
                     @endif
 
                     <div class="table-responsive">
-                    <table class="table table-hover align-middle">
-                        <thead class="table-light">
-                            <tr>
-                                <th width="5%">No</th>
-                                <th>Nama Peminjam</th>
-                                <th>Barang</th>
-                                <th>Tanggal Pinjam</th>
-                                <th>Waktu Pinjam</th>
-                                <th>Status</th>
-                                <th width="20%" class="text-center">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse($peminjamans as $no => $peminjaman)
-                            <tr>
-                                <td>{{ $no + 1 }}</td>
-                                <td>
-                                    <strong>{{ $peminjaman->user->nama }}</strong>
-                                    <small class="text-muted d-block">{{ $peminjaman->user->email }}</small>
-                                </td>
-                                <td>
-                                    {{ $peminjaman->barang->merk }}
-                                    <small class="text-muted d-block">Kode: {{ $peminjaman->barang->kode_barang }}</small>
-                                </td>
-                                <td>
-                                    {{ $peminjaman->tgl_pinjam }}
-                                    <small class="text-muted d-block">{{ $peminjaman->tgl_pinjam }}</small>
-                                </td>
-                                <td>
-                                    {{ $peminjaman->time_pinjam }}
-                                    <small class="text-muted d-block">{{ $peminjaman->time_pinjam }}</small>
-                                </td>
-                                <td>
-                                    <span class="badge bg-{{ $peminjaman->status == 'pinjam' ? 'warning' : 'success' }}">
-                                        {{ $peminjaman->status == 'pinjam' ? 'Dipinjam' : 'Dikembalikan' }}
-                                    </span>
-                                </td>
-                                <td class="text-center">
-                                    <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalEdit{{ $peminjaman->id }}" title="Edit">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <form action="{{ route('admin.peminjaman.destroy', $peminjaman->id) }}" method="POST" class="d-inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Hapus" onclick="return confirm('Apakah Anda yakin ingin menghapus data peminjaman ini?')">
-                                            <i class="fas fa-trash-alt"></i>
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th width="5%">No</th>
+                                    <th>Nama Peminjam</th>
+                                    <th>Barang</th>
+                                    <th>Tanggal Pinjam</th>
+                                    <th>Waktu Pinjam</th>
+                                    <th>Status</th>
+                                    <th width="20%" class="text-center">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($peminjamans as $no => $peminjaman)
+                                <tr>
+                                    <td>{{ $no + 1 }}</td>
+                                    <td>
+                                        <strong>{{ $peminjaman->user->nama }}</strong>
+                                        <small class="text-muted d-block">{{ $peminjaman->user->email }}</small>
+                                    </td>
+                                    <td>
+                                        {{ $peminjaman->barang->merk }}
+                                        <small class="text-muted d-block">Kode: {{ $peminjaman->barang->kode_barang }}</small>
+                                    </td>
+                                    <td>{{ $peminjaman->tgl_pinjam }}</td>
+                                    <td>{{ $peminjaman->time_pinjam }}</td>
+                                    <td>
+                                        @if($peminjaman->status == 'pending')
+                                            <span class="badge bg-secondary">Menunggu Persetujuan</span>
+                                        @elseif($peminjaman->status == 'approved')
+                                            <span class="badge bg-primary">Disetujui</span>
+                                        @elseif($peminjaman->status == 'rejected')
+                                            <span class="badge bg-danger">Ditolak</span>
+                                            @if($peminjaman->admin_notes)
+                                                <small class="d-block text-muted">Alasan: {{ $peminjaman->admin_notes }}</small>
+                                            @endif
+                                        @elseif($peminjaman->status == 'pinjam')
+                                            <span class="badge bg-warning text-dark">Dipinjam</span>
+                                        @else
+                                            <span class="badge bg-success">Selesai</span>
+                                        @endif
+                                    </td>
+                                    <td class="text-center">
+                                        @if($peminjaman->status == 'pending')
+                                            <form action="{{ route('admin.peminjaman.approve', $peminjaman->id) }}" method="POST" class="d-inline">
+                                                @csrf
+                                                <button type="submit" class="btn btn-sm btn-success" title="Setujui">
+                                                    <i class="fas fa-check"></i>
+                                                </button>
+                                            </form>
+                                            <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modalTolak{{ $peminjaman->id }}" title="Tolak">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        @elseif($peminjaman->status == 'approved')
+                                            <form action="{{ route('admin.peminjaman.confirm', $peminjaman->id) }}" method="POST" class="d-inline">
+                                                @csrf
+                                                <button type="submit" class="btn btn-sm btn-primary" title="Konfirmasi">
+                                                    <i class="fas fa-check-double"></i>
+                                                </button>
+                                            </form>
+                                        @elseif($peminjaman->status == 'pinjam')
+                                            <form action="{{ route('admin.peminjaman.complete', $peminjaman->id) }}" method="POST" class="d-inline">
+                                                @csrf
+                                                <button type="submit" class="btn btn-sm btn-info" title="Selesaikan">
+                                                    <i class="fas fa-undo"></i>
+                                                </button>
+                                            </form>
+                                        @endif
+                                        
+                                        <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalEdit{{ $peminjaman->id }}" title="Edit">
+                                            <i class="fas fa-edit"></i>
                                         </button>
-                                    </form>
-                                </td>
-                            </tr>
-                            @empty
-                            <tr>
-                                <td colspan="7" class="text-center py-4">
-                                    <div class="text-muted">
-                                        <i class="fas fa-inbox fa-2x mb-2"></i>
-                                        <p>Belum ada data peminjaman</p>
-                                    </div>
-                                </td>
-                            </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
+                                        <form action="{{ route('admin.peminjaman.destroy', $peminjaman->id) }}" method="POST" class="d-inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-outline-danger" title="Hapus" onclick="return confirm('Apakah Anda yakin ingin menghapus data peminjaman ini?')">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="7" class="text-center py-4">
+                                        <div class="text-muted">
+                                            <i class="fas fa-inbox fa-2x mb-2"></i>
+                                            <p>Belum ada data peminjaman</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -118,9 +148,17 @@
                             <small class="text-muted">
                                 Kode: {{ $peminjaman->barang->kode_barang }} |
                                 Status:
-                                <span class="badge bg-{{ $peminjaman->status == 'pinjam' ? 'warning' : 'success' }}">
-                                    {{ $peminjaman->status == 'pinjam' ? 'Dipinjam' : 'Dikembalikan' }}
-                                </span>
+                                @if($peminjaman->status == 'pending')
+                                    <span class="badge bg-secondary">Menunggu</span>
+                                @elseif($peminjaman->status == 'approved')
+                                    <span class="badge bg-primary">Disetujui</span>
+                                @elseif($peminjaman->status == 'rejected')
+                                    <span class="badge bg-danger">Ditolak</span>
+                                @elseif($peminjaman->status == 'pinjam')
+                                    <span class="badge bg-warning text-dark">Dipinjam</span>
+                                @else
+                                    <span class="badge bg-success">Selesai</span>
+                                @endif
                             </small>
                         </div>
                         @empty
@@ -135,7 +173,6 @@
         </div>
     </div>
 </div>
-
 
 <!-- Modal Tambah Peminjaman -->
 <div class="modal fade" id="modalTambah" tabindex="-1" aria-hidden="true">
@@ -156,7 +193,7 @@
                             <option value="">-- Pilih Member --</option>
                             @foreach($members as $member)
                                 <option value="{{ $member->id }}">
-                                    {{ $member->nama }} <!-- Hanya tampilkan nama -->
+                                    {{ $member->nama }}
                                 </option>
                             @endforeach
                         </select>
@@ -166,8 +203,9 @@
                         <select class="form-select select2" id="barang_id" name="barang_id" required>
                             <option value="">-- Pilih Barang --</option>
                             @foreach($barangs as $barang)
-                                <option value="{{ $barang->id }}">
-                                    {{ $barang->merk }} <!-- Hanya tampilkan nama barang -->
+                                <option value="{{ $barang->id }}" {{ $barang->status != 'tersedia' ? 'disabled' : '' }}>
+                                    {{ $barang->merk }} ({{ $barang->kode_barang }})
+                                    {{ $barang->status != 'tersedia' ? '(Tidak Tersedia)' : '' }}
                                 </option>
                             @endforeach
                         </select>
@@ -226,8 +264,9 @@
                         <label for="barang_id_edit{{ $peminjaman->id }}" class="form-label">Pilih Barang</label>
                         <select class="form-select select2" id="barang_id_edit{{ $peminjaman->id }}" name="barang_id" required>
                             @foreach($barangs as $barang)
-                                <option value="{{ $barang->id }}" {{ $peminjaman->barang_id == $barang->id ? 'selected' : '' }}>
-                                    {{ $barang->merk }}
+                                <option value="{{ $barang->id }}" {{ $peminjaman->barang_id == $barang->id ? 'selected' : '' }} {{ $barang->status != 'tersedia' && $peminjaman->barang_id != $barang->id ? 'disabled' : '' }}>
+                                    {{ $barang->merk }} ({{ $barang->kode_barang }})
+                                    {{ $barang->status != 'tersedia' && $peminjaman->barang_id != $barang->id ? '(Tidak Tersedia)' : '' }}
                                 </option>
                             @endforeach
                         </select>
@@ -242,7 +281,22 @@
                             <input type="time" class="form-control" id="time_pinjam_edit{{ $peminjaman->id }}" name="time_pinjam" value="{{ $peminjaman->time_pinjam }}" required>
                         </div>
                     </div>
-                    <input type="hidden" name="status" value="{{ $peminjaman->status }}">
+                    <div class="mb-3">
+                        <label class="form-label">Status</label>
+                        <select class="form-select" name="status" required>
+                            <option value="pending" {{ $peminjaman->status == 'pending' ? 'selected' : '' }}>Pending</option>
+                            <option value="approved" {{ $peminjaman->status == 'approved' ? 'selected' : '' }}>Disetujui</option>
+                            <option value="rejected" {{ $peminjaman->status == 'rejected' ? 'selected' : '' }}>Ditolak</option>
+                            <option value="pinjam" {{ $peminjaman->status == 'pinjam' ? 'selected' : '' }}>Dipinjam</option>
+                            <option value="selesai" {{ $peminjaman->status == 'selesai' ? 'selected' : '' }}>Selesai</option>
+                        </select>
+                    </div>
+                    @if($peminjaman->status == 'rejected' || $peminjaman->admin_notes)
+                    <div class="mb-3">
+                        <label class="form-label">Catatan Admin</label>
+                        <textarea class="form-control" name="admin_notes" rows="3">{{ $peminjaman->admin_notes }}</textarea>
+                    </div>
+                    @endif
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
@@ -256,6 +310,41 @@
         </div>
     </div>
 </div>
+@endforeach
+
+<!-- Modal Tolak Peminjaman -->
+@foreach($peminjamans as $peminjaman)
+@if($peminjaman->status == 'pending')
+<div class="modal fade" id="modalTolak{{ $peminjaman->id }}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">
+                    <i class="fas fa-times-circle me-2"></i>Tolak Peminjaman
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ route('admin.peminjaman.reject', $peminjaman->id) }}" method="POST">
+                @csrf
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="admin_notes" class="form-label">Alasan Penolakan</label>
+                        <textarea class="form-control" id="admin_notes" name="admin_notes" rows="3" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-1"></i> Batal
+                    </button>
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-ban me-1"></i> Tolak
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@endif
 @endforeach
 
 <!-- CSS Khusus -->
@@ -291,8 +380,25 @@
     .list-group-item:first-child {
         border-top: none;
     }
+    .badge.bg-secondary {
+        background-color: #6c757d !important;
+        color: white !important;
+    }
+    .badge.bg-primary {
+        background-color: #0d6efd !important;
+        color: white !important;
+    }
+    .badge.bg-danger {
+        background-color: #dc3545 !important;
+        color: white !important;
+    }
     .badge.bg-warning {
-        color: #000;
+        background-color: #ffc107 !important;
+        color: black !important;
+    }
+    .badge.bg-success {
+        background-color: #198754 !important;
+        color: white !important;
     }
     .select2-container--default .select2-selection--single {
         height: 38px;
@@ -301,9 +407,11 @@
     .select2-container--default .select2-selection--single .select2-selection__arrow {
         height: 36px;
     }
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        line-height: 36px;
+    }
 </style>
 
-<!-- Tambahkan sebelum penutup body -->
 @section('scripts')
 <!-- Select2 JS -->
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
@@ -314,6 +422,34 @@ $(document).ready(function() {
         placeholder: "Pilih...",
         allowClear: true,
         width: '100%'
+    });
+
+    // Konfirmasi sebelum menolak
+    $('form[action*="reject"]').on('submit', function(e) {
+        if(!confirm('Apakah Anda yakin ingin menolak peminjaman ini?')) {
+            e.preventDefault();
+        }
+    });
+
+    // Konfirmasi sebelum menyetujui
+    $('form[action*="approve"]').on('submit', function(e) {
+        if(!confirm('Apakah Anda yakin ingin menyetujui peminjaman ini?')) {
+            e.preventDefault();
+        }
+    });
+
+    // Konfirmasi sebelum mengkonfirmasi
+    $('form[action*="confirm"]').on('submit', function(e) {
+        if(!confirm('Apakah Anda yakin ingin mengkonfirmasi peminjaman ini?')) {
+            e.preventDefault();
+        }
+    });
+
+    // Konfirmasi sebelum menyelesaikan
+    $('form[action*="complete"]').on('submit', function(e) {
+        if(!confirm('Apakah Anda yakin ingin menyelesaikan peminjaman ini?')) {
+            e.preventDefault();
+        }
     });
 });
 </script>

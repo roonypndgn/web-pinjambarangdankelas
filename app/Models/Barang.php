@@ -18,6 +18,7 @@ class Barang extends Model
         'kategori_id',
         'merk',
         'deskripsi',
+        'status',
         'jumlah',
         'cover' 
     ];
