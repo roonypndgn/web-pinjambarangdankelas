@@ -8,7 +8,7 @@
         <!-- Daftar Peminjaman -->
         <div class="col-lg-12">
             <div class="card mb-4 shadow-sm">
-                <div class="card-header bg-success text-white">
+                <div class="card-header bg-primary text-white">
                     <div class="d-flex justify-content-between align-items-center">
                         <h4 class="mb-0">
                             <i class="fas fa-exchange-alt me-2"></i>Daftar Peminjaman Saya
@@ -134,7 +134,7 @@
 <div class="modal fade" id="modalTambah" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header bg-success text-white">
+            <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title">
                     <i class="fas fa-plus-circle me-2"></i>Ajukan Peminjaman Baru
                 </h5>
@@ -171,7 +171,7 @@
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                         <i class="fas fa-times me-1"></i> Batal
                     </button>
-                    <button type="submit" class="btn btn-success">
+                    <button type="submit" class="btn btn-primary">
                         <i class="fas fa-paper-plane me-1"></i> Ajukan
                     </button>
                 </div>

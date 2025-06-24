@@ -350,11 +350,11 @@
       .hero-content h1 {
         font-size: 2rem;
       }
-      
+
       .hero-content p {
         font-size: 1rem;
       }
-      
+
       .section-title {
         font-size: 1.8rem;
       }
@@ -463,7 +463,7 @@
         <div class="col-lg-5">
           <h2 class="section-title">Cara Meminjam Barang</h2>
           <p class="section-subtitle">Hanya butuh 3 langkah mudah untuk meminjam barang yang Anda butuhkan</p>
-          <img src="" alt="Illustration" class="img-fluid d-none d-lg-block">
+          <img src="https://image.idntimes.com/post/20230415/pexels-mikhail-nilov-8297475-d970b9a19a754cc9ecd9f9b6f7df74c6-1ee6b42800c59adc727c41b8afbd220c.jpg" alt="Illustration" class="img-fluid d-none d-lg-block">
         </div>
         <div class="col-lg-7">
           <div class="step-card">
@@ -577,7 +577,7 @@
               <li><a href="{{ route('login') }}">Peminjaman Barang</a></li>
               <li><a href="{{ route('login') }}">Daftar Barang</a></li>
               <li><a href="{{ route('login') }}">Status Peminjaman</a></li>
-              
+
             </ul>
           </div>
         </div>
@@ -619,7 +619,7 @@
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function (e) {
         e.preventDefault();
-        
+
         document.querySelector(this.getAttribute('href')).scrollIntoView({
           behavior: 'smooth'
         });

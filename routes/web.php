@@ -13,6 +13,7 @@ use App\Http\Controllers\MemberBarangController;
 use App\Http\Controllers\PengembalianController;
 use App\Http\Controllers\MemberDashboardController;
 use App\Http\Controllers\MemberPeminjamanController;
+use App\Http\Controllers\MemberPengembalianController;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,7 +62,7 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/peminjaman/{peminjaman}/reject', [PeminjamanController::class, 'reject'])->name('peminjaman.reject');
             Route::post('/peminjaman/{peminjaman}/confirm', [PeminjamanController::class, 'confirm'])->name('peminjaman.confirm');
             Route::resource('pengembalian', PengembalianController::class)->except(['show']);
-            
+
         });
 
     /*
@@ -77,7 +78,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/barang', [MemberBarangController::class, 'index'])->name('barang.index');
             Route::resource('/peminjaman', MemberPeminjamanController::class);
             Route::delete('/peminjaman/{peminjaman}/cancel', [MemberPeminjamanController::class, 'cancel'])->name('peminjaman.cancel');
-            Route::resource('/pengembalian', PengembalianController::class);
+            Route::get('/pengembalian', [MemberPengembalianController::class, 'index'])->name('pengembalian.index');
         });
 });
 
