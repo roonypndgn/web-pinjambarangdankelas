@@ -8,19 +8,7 @@
   <div class="row mb-4">
     <div class="col-12">
       <div class="d-flex justify-content-between align-items-center">
-        @php
-        $hour = (int)now()->format('HH');
-            if ($hour >= 5 && $hour < 12) {
-                $greeting = 'Selamat Pagi';
-            } elseif ($hour >= 12 && $hour < 15) {
-                $greeting = 'Selamat Siang';
-            } elseif ($hour >= 15 && $hour < 18) {
-                $greeting = 'Selamat Sore';
-            } else {
-                $greeting = 'Selamat Malam';
-            }
-        @endphp
-        <h2 class="fw-bold mb-0">Hallo {{ $greeting }}, {{ Auth::user()->nama }}</h2>
+        <h2 class="fw-bold mb-0">Hallo Selamat Datang, {{ Auth::user()->nama }}</h2>
         <div class="d-flex">
           <span class="badge bg-primary rounded-pill me-2 d-flex align-items-center">
             <i class="bi bi-person-fill me-1"></i> {{ Auth::user()->nama }}

@@ -133,9 +133,9 @@
               </button>
               
               <a 
-                href="{{ route('member.peminjaman.create', ['barang_id' => $barang->id]) }}" 
-                class="btn btn-primary btn-sm {{ $barang->status != 'tersedia' || $barang->jumlah <= 0 ? 'disabled' : '' }}"
-                >
+                      href="{{ route('member.peminjaman.index', ['barang_id' => $barang->id]) }}" 
+                      class="btn btn-primary {{ $barang->status != 'tersedia' || $barang->jumlah <= 0 ? 'disabled' : '' }}"
+                    >
                 <i class="bi bi-cart-plus me-1"></i> Pinjam
               </a>
             </div>
