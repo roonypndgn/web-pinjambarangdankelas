@@ -31,6 +31,7 @@ class MemberProfilController extends Controller
             'email' => 'required|email|unique:users,email,' . $user->id,
             'telepon' => 'nullable|string|max:20',
             'alamat' => 'nullable|string|max:255',
+            'tanggal_lahir' => 'nullable|date',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
          if ($request->hasFile('foto')) {
@@ -47,6 +48,7 @@ class MemberProfilController extends Controller
         $user->email = $request->email;
         $user->telepon = $request->telepon;
         $user->alamat = $request->alamat;
+        $user->tanggal_lahir = $request->tanggal_lahir;
         $user->save();
         
         return redirect()->route('member.dashboard.profile')->with('success', 'Profil berhasil diperbarui.');

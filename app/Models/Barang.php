@@ -30,4 +30,9 @@ class Barang extends Model
 {
     return $this->hasMany(\App\Models\Pinjam::class, 'barang_id');
 }
+public function pinjams()
+{
+    return $this->hasMany(\App\Models\Pinjam::class, 'barang_id');
+}
+
 }

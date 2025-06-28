@@ -227,19 +227,7 @@
 
         <ul class="navbar-nav">
           <!-- Notifikasi -->
-          <li class="nav-item dropdown">
-            <a class="nav-link position-relative" href="#" id="notifDropdown" role="button" data-bs-toggle="dropdown">
-              <i class="bi bi-bell-fill"></i>
-              <span class="badge bg-danger rounded-pill badge-notif">3</span>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end animate__animated animate__fadeIn">
-              <li><h6 class="dropdown-header">Notifikasi</h6></li>
-              <li><a class="dropdown-item" href="#"><i class="bi bi-check-circle me-2 text-success"></i>Peminjaman disetujui</a></li>
-              <li><a class="dropdown-item" href="#"><i class="bi bi-exclamation-triangle me-2 text-warning"></i>Pengingat pengembalian</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item text-primary" href="#"><i class="bi bi-bell me-2"></i>Lihat semua</a></li>
-            </ul>
-          </li>
+          
 
           <!-- Profil -->
           <li class="nav-item dropdown">

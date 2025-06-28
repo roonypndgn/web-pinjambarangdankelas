@@ -14,6 +14,7 @@ use App\Http\Controllers\MemberProfilController;
 use App\Http\Controllers\PengembalianController;
 use App\Http\Controllers\MemberDashboardController;
 use App\Http\Controllers\MemberPeminjamanController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\MemberPengembalianController;
 
 /*
@@ -53,7 +54,7 @@ Route::middleware(['auth'])->group(function () {
         ->prefix('admin')
         ->name('admin.')
         ->group(function () {
-            Route::get('/dashboard', [AdminController::class, 'admin'])->name('dashboard.admin');
+            Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
             Route::resource('/member', MemberController::class);
             Route::resource('/kategori', KategoriController::class);
             Route::resource('/barang', BarangController::class);

@@ -112,9 +112,13 @@
         margin-left: 0;
       }
     }
+    
   </style>
 </head>
-<body>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+@yield('scripts')
+</body>
 
   <!-- Tombol Toggle Sidebar -->
   <button class="sidebar-toggle" id="sidebarToggle" title="Buka/Tutup Menu">
@@ -129,7 +133,7 @@
   <!-- Sidebar -->
   <div class="sidebar hidden" id="sidebar">
     <h4><i class="bi bi-book-half"></i> Admin</h4>
-    <a href="{{ route('admin.dashboard.admin') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
+    <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
       <i class="bi bi-speedometer2"></i> Dashboard
     </a>
     <a href="{{ route('admin.member.index') }}" class="{{ request()->routeIs('admin.member.*') ? 'active' : '' }}">

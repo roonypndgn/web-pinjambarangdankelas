@@ -52,6 +52,7 @@ class MemberDashboardController extends Controller
             ->get();
 
         return view('member.dashboard.index', compact(
+            'user',
             'peminjamanAktif',
             'barangTersedia',
             'harusDikembalikan',

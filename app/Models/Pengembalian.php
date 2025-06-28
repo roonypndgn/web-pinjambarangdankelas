@@ -22,4 +22,12 @@ class Pengembalian extends Model
     {
         return $this->belongsTo(Pinjam::class);
     }
+    public function user()
+{
+    return $this->belongsTo(\App\Models\User::class, 'user_id');
+}
+public function barang()
+{
+    return $this->belongsTo(\App\Models\Barang::class, 'barang_id');
+}
 }
