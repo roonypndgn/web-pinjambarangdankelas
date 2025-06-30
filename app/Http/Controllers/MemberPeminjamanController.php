@@ -20,7 +20,9 @@ class MemberPeminjamanController extends Controller
             ->latest()
             ->paginate(10);
         $barangs = Barang::where('status', 'tersedia')->get();
-        return view('member.peminjaman.index', compact('peminjamans','barangs'));
+        $user = Auth::user();
+        
+        return view('member.peminjaman.index', compact('peminjamans','barangs','user'));
     }
 
     /**

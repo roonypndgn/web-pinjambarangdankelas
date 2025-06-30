@@ -90,7 +90,11 @@
                                             data-bs-target="#modalDetail{{ $peminjaman->id }}" title="Detail">
                                             <i class="fas fa-eye"></i>
                                         </button>
-
+                                        @if(in_array($peminjaman->status, ['approved', 'pinjam', 'selesai']))
+                                        <a href="{{ route('member.invoice.index', $peminjaman->id) }}" target="_blank" class="btn btn-sm btn-outline-success" title="Cetak Invoice">
+                                            <i class="fas fa-file-invoice"></i>
+                                        </a>
+                                        @endif
                                         @if($peminjaman->status == 'pending')
                                         <form action="{{ route('member.peminjaman.cancel', $peminjaman->id) }}"
                                             method="POST" class="d-inline">
