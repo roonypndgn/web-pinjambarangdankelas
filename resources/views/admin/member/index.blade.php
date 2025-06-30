@@ -66,6 +66,11 @@
                                 @endforelse
                             </tbody>
                         </table>
+                        <div class="mt-3">
+                            <a href="{{ route('admin.laporan.laporanmember') }}" class="btn btn-success">
+                                <i class="fas fa-file-pdf me-1"></i> Export Pdf
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>

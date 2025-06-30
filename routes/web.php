@@ -6,15 +6,17 @@ use App\Http\Controllers\SesiController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\MemberController;
+
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\MemberBarangController;
 use App\Http\Controllers\MemberProfilController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PengembalianController;
+use App\Http\Controllers\AdminLaporanMBController;
 use App\Http\Controllers\MemberDashboardController;
 use App\Http\Controllers\MemberPeminjamanController;
-use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\MemberPengembalianController;
 
 /*
@@ -64,6 +66,8 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/peminjaman/{peminjaman}/reject', [PeminjamanController::class, 'reject'])->name('peminjaman.reject');
             Route::post('/peminjaman/{peminjaman}/confirm', [PeminjamanController::class, 'confirm'])->name('peminjaman.confirm');
             Route::resource('pengembalian', PengembalianController::class)->except(['show']);
+            Route::get('laporan/laporanbarang', [AdminLaporanMBController::class, 'exportPdf'])->name('laporan.laporanbarang');
+            Route::get('laporan/laporanmember', [AdminLaporanMBController::class, 'exportPdfMember'])->name('laporan.laporanmember');
 
         });
 

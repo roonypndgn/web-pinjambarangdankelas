@@ -86,6 +86,11 @@
                     </tbody>
                 </table>
             </div>
+            <div class="mt-3">
+                <a href="{{ route('admin.laporan.laporanbarang') }}" class="btn btn-success">
+                <i class="fas fa-file-pdf me-1"></i> Export Pdf
+                </a>
+            </div>
             <!-- Modal Tambah Barang -->
             <div class="modal fade" id="modalTambahBarang" tabindex="-1" aria-labelledby="modalTambahBarangLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
