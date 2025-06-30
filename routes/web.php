@@ -15,6 +15,7 @@ use App\Http\Controllers\PengembalianController;
 use App\Http\Controllers\MemberDashboardController;
 use App\Http\Controllers\MemberPeminjamanController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\AdminLaporanPPController;
 use App\Http\Controllers\MemberPengembalianController;
 
 /*
@@ -64,6 +65,8 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/peminjaman/{peminjaman}/reject', [PeminjamanController::class, 'reject'])->name('peminjaman.reject');
             Route::post('/peminjaman/{peminjaman}/confirm', [PeminjamanController::class, 'confirm'])->name('peminjaman.confirm');
             Route::resource('pengembalian', PengembalianController::class)->except(['show']);
+            Route::get('laporanpeminjaman/export', [AdminLaporanPPController::class, 'exportPdf'])->name('laporanPeminjaman.export');
+            Route::get('laporanpengembalian/export', [AdminLaporanPPController::class, 'exportPdfPengembalian'])->name('laporanPengembalian.export');
 
         });
 

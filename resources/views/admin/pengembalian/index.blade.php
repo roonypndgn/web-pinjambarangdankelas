@@ -86,6 +86,10 @@
                     {{ $pengembalians->links() }}
                 </div>
             </div>
+            <div class="mt-3">
+                <a href="{{ route('admin.laporanPengembalian.export') }}" class="btn btn-success">
+                    <i class="fas fa-file-pdf me-1"></i> Export PDF
+                </a>
         </div>
     </div>
 </div>
@@ -110,8 +114,8 @@
                             @foreach($peminjamans as $pinjam)
                                 @if($pinjam->status == 'pinjam')
                                     <option value="{{ $pinjam->id }}">
-                                        ID: {{ $pinjam->id }} - 
-                                        {{ $pinjam->barang->merk }} ({{ $pinjam->barang->kode_barang }}) - 
+                                        ID: {{ $pinjam->id }} -
+                                        {{ $pinjam->barang->merk }} ({{ $pinjam->barang->kode_barang }}) -
                                         {{ $pinjam->user->nama }}
                                     </option>
                                 @endif
