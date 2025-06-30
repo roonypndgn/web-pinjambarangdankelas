@@ -93,7 +93,7 @@
                                                 </button>
                                             </form>
                                         @endif
-                                        
+
                                         <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalEdit{{ $peminjaman->id }}" title="Edit">
                                             <i class="fas fa-edit"></i>
                                         </button>
@@ -118,6 +118,12 @@
                                 @endforelse
                             </tbody>
                         </table>
+                        </div>
+                            <div class="mt-3">
+                                <a href="{{ route('admin.laporanPeminjaman.export') }}" class="btn btn-success">
+                                    <i class="fas fa-file-pdf me-1"></i> Export PDF
+                                </a>
+                            </div>
                     </div>
                 </div>
             </div>
