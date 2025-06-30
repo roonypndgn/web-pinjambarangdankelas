@@ -16,6 +16,7 @@ use App\Http\Controllers\PengembalianController;
 use App\Http\Controllers\AdminLaporanMBController;
 use App\Http\Controllers\AdminLaporanPPController;
 use App\Http\Controllers\MemberDashboardController;
+use App\Http\Controllers\MemberInvoiceController;
 use App\Http\Controllers\MemberPeminjamanController;
 use App\Http\Controllers\MemberPengembalianController;
 
@@ -92,6 +93,7 @@ Route::middleware(['auth'])->group(function () {
             Route::put('/dashboard/profile', [MemberProfilController::class, 'update'])->name('dashboard.profile');
             Route::put('/dashboard/profile/password', [MemberProfilController::class, 'changePassword'])->name('dashboard.changePassword');
             Route::get('/pengembalian', [MemberPengembalianController::class, 'index'])->name('pengembalian.index');
+            Route::get('/invoice/{id}/pdf', [MemberInvoiceController::class, 'invoicePdf'])->name('invoice.index');
         });
 });
 

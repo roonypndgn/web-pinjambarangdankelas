@@ -27,7 +27,7 @@ class MemberBarangController extends Controller
 
     $barangs = $query->latest()->paginate(12);
     $kategoris = Kategori::all(); // <-- Tambahkan baris ini
-
-    return view('member.barang.index', compact('barangs', 'kategoris'));
+    $user = auth()->user();
+    return view('member.barang.index', compact('barangs', 'kategoris','user'));
 }
 }

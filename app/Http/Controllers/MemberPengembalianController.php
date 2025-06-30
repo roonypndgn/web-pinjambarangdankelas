@@ -17,8 +17,8 @@ class MemberPengembalianController extends Controller
         $pengembalians = Pengembalian::whereHas('pinjam', function($query) use ($userId) {
             $query->where('user_id', $userId);
         })->with('pinjam')->latest()->get();
-
-        return view('member.pengembalian.index', compact('pengembalians'));
+        $user = Auth::user();
+        return view('member.pengembalian.index', compact('pengembalians','user'));
     }
 
     // Menampilkan detail status pengembalian (opsional)
