@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Barang;
 use App\Models\Pinjam;
+use App\Models\Pengembalian;
 use App\Models\User;
 use App\Services\NotificationService;
 use App\Notifications\PeminjamanDisetujui;
@@ -97,10 +98,10 @@ class PeminjamanController extends Controller
                 try {
                         // Cek ketersediaan barang
                         $barang = Barang::findOrFail($request->barang_id);
-                         if ($barang->jumlah < 1) {
+                        if ($barang->jumlah < 1) {
                                 return redirect()->back()
-                                ->with('error', 'Stok barang habis')
-                                ->withInput();
+                                        ->with('error', 'Stok barang habis')
+                                        ->withInput();
                         }
 
                         // Kurangi stok
@@ -145,10 +146,11 @@ class PeminjamanController extends Controller
                                         ->with('error', 'Peminjaman ini sudah diproses sebelumnya.');
                         }
 
-                        // Cek ketersediaan barang
-                        if ($peminjaman->barang->status != 'tersedia') {
+                        // Cek stok barang
+                        $barang = $peminjaman->barang;
+                        if ($barang->jumlah < 1) {
                                 return redirect()->back()
-                                        ->with('error', 'Barang tidak tersedia untuk dipinjam');
+                                        ->with('error', 'Stok barang habis, tidak bisa dikonfirmasi.');
                         }
 
 
@@ -215,17 +217,25 @@ class PeminjamanController extends Controller
                                         ->with('error', 'Hanya peminjaman yang sudah disetujui yang bisa dikonfirmasi.');
                         }
 
-                        // Cek ketersediaan barang
-                        if ($peminjaman->barang->status != 'tersedia') {
+                        // Cek stok barang
+                        $barang = $peminjaman->barang;
+                        if ($barang->jumlah < 1) {
                                 return redirect()->back()
-                                        ->with('error', 'Barang tidak tersedia untuk dipinjam');
+                                        ->with('error', 'Stok barang habis, tidak bisa dikonfirmasi.');
+                        }
+
+                        // Kurangi stok barang
+                        $barang->decrement('jumlah');
+
+                        // Jika stok habis setelah dikurangi, ubah status barang
+                        if ($barang->jumlah == 0) {
+                                $barang->update(['status' => 'habis']);
+                        } else {
+                                $barang->update(['status' => 'dipinjam']);
                         }
 
                         // Update status peminjaman
                         $peminjaman->update(['status' => 'pinjam']);
-
-                        // Update status barang
-                        $peminjaman->barang->update(['status' => 'dipinjam']);
 
                         return redirect()->route('admin.peminjaman.index')
                                 ->with('success', 'Peminjaman berhasil dikonfirmasi. Barang telah dipinjam.');
@@ -240,27 +250,40 @@ class PeminjamanController extends Controller
          */
         public function complete($id)
         {
-                try {
-                        $peminjaman = Pinjam::findOrFail($id);
+        try {
+                $peminjaman = Pinjam::findOrFail($id);
 
-                        // Validasi status
-                        if ($peminjaman->status != 'pinjam') {
-                                return redirect()->back()
-                                        ->with('error', 'Hanya peminjaman aktif yang bisa diselesaikan.');
-                        }
-
-                        // Update status peminjaman
-                        $peminjaman->update(['status' => 'selesai']);
-
-                        // Update status barang
-                        $peminjaman->barang->update(['status' => 'tersedia']);
-
-                        return redirect()->route('admin.peminjaman.index')
-                                ->with('success', 'Peminjaman berhasil diselesaikan. Barang telah dikembalikan.');
-                } catch (\Exception $e) {
-                        return redirect()->back()
-                                ->with('error', 'Gagal menyelesaikan peminjaman: ' . $e->getMessage());
+                // Validasi status
+                if ($peminjaman->status != 'pinjam') {
+                return redirect()->back()
+                        ->with('error', 'Hanya peminjaman aktif yang bisa diselesaikan.');
                 }
+
+                // Update status peminjaman
+                $peminjaman->update(['status' => 'selesai']);
+
+                // Tambah stok barang
+                $barang = $peminjaman->barang;
+                $barang->increment('jumlah');
+
+                // Update status barang
+                $barang->update(['status' => 'tersedia']);
+
+                // Catat ke tabel pengembalian
+                Pengembalian::create([
+                'pinjam_id' => $peminjaman->id,
+                'user_id' => $peminjaman->user_id,
+                'barang_id' => $peminjaman->barang_id,
+                'tgl_kembali' => now()->toDateString(),
+                'time_kembali' => now()->format('H:i'),
+                ]);
+
+                return redirect()->route('admin.peminjaman.index')
+                ->with('success', 'Peminjaman berhasil diselesaikan. Barang telah dikembalikan.');
+        } catch (\Exception $e) {
+                return redirect()->back()
+                ->with('error', 'Gagal menyelesaikan peminjaman: ' . $e->getMessage());
+        }
         }
         /**
          * Menampilkan form edit peminjaman

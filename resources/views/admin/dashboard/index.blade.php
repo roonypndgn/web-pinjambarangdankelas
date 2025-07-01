@@ -12,7 +12,7 @@
       $cards = [
         ['title' => 'Total Barang Tersedia', 'count' => $totalBarang, 'icon' => 'fa-boxes', 'color' => 'primary'],
         ['title' => 'Total Member', 'count' => $totalMember, 'icon' => 'fa-users', 'color' => 'success'],
-        ['title' => 'Peminjaman Aktif', 'count' => $totalPeminjamanBerlangsung, 'icon' => 'fa-clipboard-list', 'color' => 'info'],
+        ['title' => 'Peminjaman Aktif', 'count' => $totalPeminjamanAktif, 'icon' => 'fa-clipboard-list', 'color' => 'info'],
         ['title' => 'Total Pengembalian', 'count' => $totalPengembalian, 'icon' => 'fa-exchange-alt', 'color' => 'warning'],
       ];
     @endphp
@@ -66,7 +66,7 @@
             <p class="text-muted">{{ $barangPopuler->kategori->nama }}</p>
             <span class="badge bg-primary">Dipinjam {{ $barangPopuler->pinjams_count }} kali</span>
             <p class="mt-3">{{ Str::limit($barangPopuler->deskripsi, 100) }}</p>
-            <a href="{{ route('admin.barang.show', $barangPopuler->id) }}" class="btn btn-sm btn-outline-primary">Lihat Detail</a>
+            <a href="{{ route('admin.barang.index', $barangPopuler->id) }}" class="btn btn-sm btn-outline-primary">Lihat Detail</a>
           @else
             <p class="text-muted">Tidak ada data barang populer.</p>
           @endif

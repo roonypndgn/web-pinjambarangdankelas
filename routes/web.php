@@ -11,12 +11,11 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\MemberBarangController;
 use App\Http\Controllers\MemberProfilController;
-use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PengembalianController;
+use App\Http\Controllers\MemberInvoiceController;
 use App\Http\Controllers\AdminLaporanMBController;
 use App\Http\Controllers\AdminLaporanPPController;
 use App\Http\Controllers\MemberDashboardController;
-use App\Http\Controllers\MemberInvoiceController;
 use App\Http\Controllers\MemberPeminjamanController;
 use App\Http\Controllers\MemberPengembalianController;
 
@@ -89,6 +88,7 @@ Route::middleware(['auth'])->group(function () {
             Route::resource('/peminjaman', MemberPeminjamanController::class);
             Route::get('/member/profile', [MemberDashboardController::class, 'profile'])->name('dashboard.profil');
             Route::delete('/peminjaman/{peminjaman}/cancel', [MemberPeminjamanController::class, 'cancel'])->name('peminjaman.cancel');
+            Route::post('/barang/{barang}/pinjam', [MemberPeminjamanController::class, 'pinjamLangsung'])->name('barang.pinjamLangsung');
             Route::get('/dashboard/profile', [MemberProfilController::class, 'index'])->name('dashboard.profile');
             Route::put('/dashboard/profile', [MemberProfilController::class, 'update'])->name('dashboard.profile');
             Route::put('/dashboard/profile/password', [MemberProfilController::class, 'changePassword'])->name('dashboard.changePassword');

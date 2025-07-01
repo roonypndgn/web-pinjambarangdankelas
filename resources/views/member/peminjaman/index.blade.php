@@ -152,9 +152,9 @@
                         <select class="form-select" id="barang_id" name="barang_id" required>
                             <option value="">-- Pilih Barang --</option>
                             @foreach($barangs as $barang)
-                            <option value="{{ $barang->id }}" {{ $barang->status != 'tersedia' ? 'disabled' : '' }}>
+                            <option value="{{ $barang->id }}" {{ $barang->jumlah <= 0 ? 'disabled' : '' }}>
                                 {{ $barang->merk }} ({{ $barang->kategori->nama }})
-                                {{ $barang->status != 'tersedia' ? '(Tidak Tersedia)' : '' }}
+                                {{ $barang->jumlah <= 0 ? '(Stok Habis)' : '' }}
                             </option>
                             @endforeach
                         </select>

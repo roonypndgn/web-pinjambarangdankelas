@@ -19,7 +19,7 @@ class MemberPeminjamanController extends Controller
             ->where('user_id', Auth::id())
             ->latest()
             ->paginate(10);
-        $barangs = Barang::where('status', 'tersedia')->get();
+        $barangs = Barang::with('kategori')->get();
         $user = Auth::user();
         
         return view('member.peminjaman.index', compact('peminjamans','barangs','user'));
@@ -30,7 +30,7 @@ class MemberPeminjamanController extends Controller
      */
     public function create()
     {
-        $barangs = Barang::where('status', 'tersedia')->get();
+        $barangs = Barang::with('kategori')->get();
         return view('member.peminjaman.create', compact('barangs'));
     }
 
@@ -55,11 +55,11 @@ class MemberPeminjamanController extends Controller
         }
 
         try {
-            // Cek ketersediaan barang
+            // Cek ketersediaan barang berdasarkan stok dan status
             $barang = Barang::findOrFail($request->barang_id);
-            if ($barang->status != 'tersedia') {
+            if ($barang->jumlah < 1) {
                 return redirect()->back()
-                    ->with('error', 'Barang tidak tersedia untuk dipinjam')
+                    ->with('error', 'Barang tidak tersedia atau stok habis untuk dipinjam')
                     ->withInput();
             }
 
@@ -119,4 +119,35 @@ class MemberPeminjamanController extends Controller
                 ->with('error', 'Gagal membatalkan peminjaman: ' . $e->getMessage());
         }
     }
+    public function pinjamLangsung($barangId)
+{
+    $barang = Barang::findOrFail($barangId);
+
+    // Cek stok
+    if ($barang->jumlah < 1) {
+        return redirect()->back()->with('error', 'Stok barang habis!');
+    }
+
+    // Cek apakah user sudah punya peminjaman pending/dipinjam untuk barang ini
+    $userId = Auth::id();
+    $sudahPinjam = \App\Models\Pinjam::where('user_id', $userId)
+        ->where('barang_id', $barangId)
+        ->whereIn('status', ['pending', 'dipinjam', 'approved', 'proses'])
+        ->exists();
+
+    if ($sudahPinjam) {
+        return redirect()->route('member.peminjaman.index')->with('error', 'Anda sudah mengajukan atau sedang meminjam barang ini.');
+    }
+
+    // Buat peminjaman otomatis
+    Pinjam::create([
+        'user_id' => $userId,
+        'barang_id' => $barangId,
+        'tgl_pinjam' => now()->toDateString(),
+        'time_pinjam' => now()->format('H:i'),
+        'status' => 'pending'
+    ]);
+
+    return redirect()->route('member.peminjaman.index')->with('success', 'Permintaan peminjaman berhasil diajukan.');
+}
 }

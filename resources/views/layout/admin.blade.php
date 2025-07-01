@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>@yield('title') | Admin Peminjaman Barang</title>
+  <link rel="icon" type="image/png" href="{{ asset('images/logo-umi.jpg') }}">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
 
@@ -30,7 +31,10 @@
       padding: 0;
       transition: all 0.3s ease;
     }
-
+    .logo {
+            width: 28px;
+            height: auto;
+        }
     .sidebar {
       height: 100vh;
       width: 250px;
@@ -111,6 +115,7 @@
       .main-content {
         margin-left: 0;
       }
+      
     }
 
   </style>
@@ -132,7 +137,9 @@
 
   <!-- Sidebar -->
   <div class="sidebar hidden" id="sidebar">
-    <h4><i class="bi bi-book-half"></i> Admin</h4>
+    <h4>
+      <img src="{{ asset('images/logo-umi.jpg') }}" class="logo" alt="Logo"> pinjamFIKOM
+    </h4>
     <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
       <i class="bi bi-speedometer2"></i> Dashboard
     </a>

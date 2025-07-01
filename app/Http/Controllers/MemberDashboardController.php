@@ -15,51 +15,26 @@ class MemberDashboardController extends Controller
     {
         $user = Auth::user();
 
-        // Data Statistik
         $peminjamanAktif = Pinjam::where('user_id', $user->id)
-            ->whereIn('status', ['dipinjam', 'proses'])
-            ->count();
+            ->whereIn('status', ['pinjam', 'proses'])
+            ->count(); 
+        $barangTersedia = Barang::sum('jumlah');
 
-        $barangTersedia = Barang::where('status', 'tersedia')->count();
-
-        $harusDikembalikan = Pinjam::where('user_id', $user->id)
-        ->where('status', 'dipinjam')
-        ->where('tgl_kembali', '<=', now())
-        ->count();
-
-        $riwayatPeminjaman = Pinjam::where('user_id', $user->id)
-            ->where('status', 'selesai')
-            ->count();
-        
-        // Barang Populer
-        $barangPopuler = Barang::withCount('peminjamans')
-            ->orderBy('peminjaman_count', 'desc')
-            ->take(4)
-            ->get();
 
         // Peminjaman Aktif
         $peminjamanAktifList = Pinjam::with('barang')
         ->where('user_id', $user->id)
-        ->whereIn('status', ['dipinjam', 'proses'])
+        ->whereIn('status', ['pinjam', 'proses'])
         ->orderBy('tgl_pinjam', 'desc')
         ->take(3)
         ->get();
-
-        // Kategori untuk shortcut
-        $kategoriPopuler = Kategori::withCount('barangs')
-            ->orderBy('barang_count', 'desc')
-            ->take(4)
-            ->get();
-
+        $barangBaru = Barang::latest()->take(5)->get();
         return view('member.dashboard.index', compact(
             'user',
             'peminjamanAktif',
             'barangTersedia',
-            'harusDikembalikan',
-            'riwayatPeminjaman',
-            'barangPopuler',
             'peminjamanAktifList',
-            'kategoriPopuler'
+            'barangBaru'
         ));
     }
     

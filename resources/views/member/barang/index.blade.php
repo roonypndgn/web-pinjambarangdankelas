@@ -78,13 +78,21 @@
           <!-- Badge Stok -->
           <div class="position-absolute top-0 end-0 m-2">
             <span class="badge
-              @if($barang->status == 'tersedia') bg-success
-              @elseif($barang->status == 'dipinjam') bg-warning text-dark
-              @elseif($barang->status == 'rusak') bg-danger
-              @else bg-secondary
-              @endif">
-              {{ ucfirst($barang->status) }}
-          </span>
+                @if($barang->jumlah <= 0)
+                    bg-secondary
+                @elseif($barang->status == 'rusak')
+                    bg-danger
+                @else
+                    bg-success
+                @endif">
+                @if($barang->jumlah <= 0)
+                    Habis
+                @elseif($barang->status == 'rusak')
+                    Rusak
+                @else
+                    Tersedia
+                @endif
+            </span>
           </div>
           
           <!-- Gambar Barang -->
@@ -132,12 +140,12 @@
                 <i class="bi bi-eye me-1"></i> Detail
               </button>
               
-              <a 
-                      href="{{ route('member.peminjaman.index', ['barang_id' => $barang->id]) }}" 
-                      class="btn btn-primary {{ $barang->status != 'tersedia' || $barang->jumlah <= 0 ? 'disabled' : '' }}"
-                    >
-                <i class="bi bi-cart-plus me-1"></i> Pinjam
-              </a>
+              <form action="{{ route('member.barang.pinjamLangsung', $barang->id) }}" method="POST" class="d-grid gap-2">
+                  @csrf
+                  <button type="submit" class="btn btn-primary {{ $barang->jumlah <= 0 ? 'disabled' : '' }}">
+                      <i class="bi bi-cart-plus me-1"></i> Pinjam
+                  </button>
+              </form>
             </div>
           </div>
         </div>
