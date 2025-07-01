@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Member - Sistem Peminjaman Buku</title>
+  <title>Member - Sistem Peminjaman Barang</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
   <style>
@@ -95,7 +95,7 @@
   <section class="hero-section">
     <div class="container">
       <h1>Selamat Datang, Anggota!</h1>
-      <p>Akses peminjaman buku dengan mudah dan cepat melalui portal ini.</p>
+      <p>Akses peminjaman barang dengan mudah dan cepat melalui portal ini.</p>
     </div>
   </section>
 
@@ -105,8 +105,8 @@
       <div class="col-md-4">
         <div class="card card-custom p-4 text-center">
           <i class="bi bi-book fs-2 text-primary mb-2"></i>
-          <h5>Buku Tersedia</h5>
-          <p class="text-muted">Lihat koleksi buku yang bisa dipinjam.</p>
+          <h5>Barang Tersedia</h5>
+          <p class="text-muted">Lihat koleksi barang yang bisa dipinjam.</p>
         </div>
       </div>
       <div class="col-md-4">
@@ -129,7 +129,7 @@
   <!-- Footer -->
   <footer>
     <div class="container">
-      <small>&copy; 2025 Sistem Peminjaman Buku | STMIK Example</small>
+      <small>&copy; 2025 pinjamFIKOM | Universitas Methodist Indonesia</small>
     </div>
   </footer>
 

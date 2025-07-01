@@ -182,11 +182,11 @@
       .login-container {
         margin: 0 15px;
       }
-      
+
       .login-header {
         padding: 25px 20px;
       }
-      
+
       .login-body {
         padding: 25px 20px;
       }
@@ -220,20 +220,20 @@
         @csrf
         <div class="form-group">
           <i class="bi bi-envelope-fill"></i>
-          <input type="email" value="{{ old('email') }}" name="email" class="form-control" placeholder="Alamat Email" required>
+          <input type="text" value="{{ old('nim_nip') }}" name="nim_nip" class="form-control" placeholder="User Name" required>
         </div>
-        
+
         <div class="form-group">
           <i class="bi bi-lock-fill"></i>
           <input type="password" name="password" class="form-control" placeholder="Kata Sandi" required>
         </div>
-        
+
         <button type="submit" class="btn btn-login">Masuk</button>
       </form>
     </div>
 
     <div class="login-footer">
-      <a href="#">Lupa kata sandi?</a> 
+      <a href="#">Lupa kata sandi?</a>
     </div>
   </div>
 

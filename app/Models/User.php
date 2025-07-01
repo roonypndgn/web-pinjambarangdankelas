@@ -26,6 +26,7 @@ class User extends Authenticatable
         'alamat',
         'telepon',
         'email',
+        'nim_nip',
         'tanggal_lahir',
         'foto',
         'password',

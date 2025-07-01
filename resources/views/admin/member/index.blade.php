@@ -33,7 +33,7 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Nama</th>
-                                    <th>Email</th>
+                                    <th>NIM/NIP</th>
                                     <th>Telepon</th>
                                     <th class="text-center">Aksi</th>
                                 </tr>
@@ -43,7 +43,7 @@
                                 <tr>
                                     <td>{{ $no + 1 }}</td>
                                     <td>{{ $member->nama }}</td>
-                                    <td>{{ $member->email }}</td>
+                                    <td>{{ $member->nim_nip }}</td>
                                     <td>{{ $member->telepon }}</td>
                                     <td class="text-center">
                                         <button class="btn btn-sm btn-outline-warning" data-bs-toggle="modal" data-bs-target="#modalEdit{{ $member->id }}">
@@ -96,8 +96,8 @@
                         <h6 class="mb-1">{{ $member->nama }}</h6>
                         <small>{{ $member->created_at->diffForHumans() }}</small>
                     </div>
-                    <p class="mb-1 text-muted">Email: {{ $member->email }}</p>
-                    <small>Ditambahkan oleh: {{ $member->created_by ?? 'Admin' }}</small>
+                    <p class="mb-1 text-muted">Nama: {{ $member->nama }}</p>
+                    <small>Ditambahkan oleh: {{ $category->user->nama ?? 'Admin' }}</small>
                 </div>
                 @empty
                 <div class="text-center py-3 text-muted">
@@ -144,9 +144,9 @@
                     @enderror
                 </div>
                 <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email') }}" required>
-                    @error('email')
+                    <label for="nim_nip" class="form-label">NIM/NIP</label>
+                    <input type="text" class="form-control @error('nim_nip') is-invalid @enderror" id="nim_nip" name="nim_nip" value="{{ old('nim_nip') }}" required>
+                    @error('nim_nip')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
@@ -195,8 +195,8 @@
                     <input type="text" class="form-control" id="telepon{{ $member->id }}" name="telepon" value="{{ $member->telepon }}">
                 </div>
                 <div class="mb-3">
-                    <label for="email{{ $member->id }}" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email{{ $member->id }}" name="email" value="{{ $member->email }}" required>
+                    <label for="nim_nip{{ $member->id }}" class="form-label">NIM/NIP</label>
+                    <input type="text" class="form-control" id="nim_nip{{ $member->id }}" name="nim_nip" value="{{ $member->nim_nip }}" required>
                 </div>
                 <div class="mb-3">
                     <label for="password{{ $member->id }}" class="form-label">Password Baru (opsional)</label>

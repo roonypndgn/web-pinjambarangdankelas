@@ -40,17 +40,17 @@
                         <div class="text-center mb-4">
                             <div class="position-relative d-inline-block">
                                 @if($user->foto)
-                                    <img src="{{ asset('storage/' . $user->foto) }}" 
-                                         class="rounded-circle shadow-lg" 
-                                         width="150" height="150" 
-                                         style="object-fit: cover; border: 3px solid #e9ecef;" 
+                                    <img src="{{ asset('storage/' . $user->foto) }}"
+                                         class="rounded-circle shadow-lg"
+                                         width="150" height="150"
+                                         style="object-fit: cover; border: 3px solid #e9ecef;"
                                          id="profileImage"
                                          alt="Foto Profil">
                                 @else
-                                    <img src="https://ui-avatars.com/api/?name={{ urlencode($user->nama) }}&background=random" 
-                                         class="rounded-circle shadow-lg" 
-                                         width="150" height="150" 
-                                         style="object-fit: cover; border: 3px solid #e9ecef;" 
+                                    <img src="https://ui-avatars.com/api/?name={{ urlencode($user->nama) }}&background=random"
+                                         class="rounded-circle shadow-lg"
+                                         width="150" height="150"
+                                         style="object-fit: cover; border: 3px solid #e9ecef;"
                                          id="profileImage"
                                          alt="Default Avatar">
                                 @endif
@@ -59,8 +59,8 @@
                                     <input type="file" id="fotoUpload" name="foto" class="d-none" accept="image/*">
                                 </label>
                             </div>
-                            @error('foto') 
-                                <div class="text-danger small text-center mt-2">{{ $message }}</div> 
+                            @error('foto')
+                                <div class="text-danger small text-center mt-2">{{ $message }}</div>
                             @enderror
                         </div>
 
@@ -71,7 +71,7 @@
                                     <span class="input-group-text bg-light">
                                         <i class="bi bi-person-fill text-muted"></i>
                                     </span>
-                                    <input type="text" name="nama" class="form-control" 
+                                    <input type="text" name="nama" class="form-control"
                                            value="{{ old('nama', $user->nama) }}" required>
                                 </div>
                                 @error('nama') <div class="text-danger small">{{ $message }}</div> @enderror
@@ -83,8 +83,8 @@
                                     <span class="input-group-text bg-light">
                                         <i class="bi bi-envelope-fill text-muted"></i>
                                     </span>
-                                    <input type="email" name="email" class="form-control bg-light" 
-                                           value="{{ old('email', $user->email) }}" readonly>
+                                    <input type="email" name="email" class="form-control bg-light"
+                                           value="{{ old('email', $user->email) }}">
                                 </div>
                             </div>
                         </div>
@@ -96,7 +96,7 @@
                                     <span class="input-group-text bg-light">
                                         <i class="bi bi-telephone-fill text-muted"></i>
                                     </span>
-                                    <input type="text" name="telepon" class="form-control" 
+                                    <input type="text" name="telepon" class="form-control"
                                            value="{{ old('telepon', $user->telepon) }}"
                                            placeholder="Contoh: 081234567890">
                                 </div>
@@ -109,7 +109,7 @@
                                     <span class="input-group-text bg-light">
                                         <i class="bi bi-calendar-event text-muted"></i>
                                     </span>
-                                    <input type="date" name="tanggal_lahir" class="form-control" 
+                                    <input type="date" name="tanggal_lahir" class="form-control"
                                            value="{{ old('tanggal_lahir', $user->tanggal_lahir) }}">
                                 </div>
                             </div>
@@ -152,14 +152,14 @@
                     <form action="{{ route('member.dashboard.changePassword') }}" method="POST">
                         @csrf
                         @method('PUT')
-                        
+
                         <div class="mb-3">
                             <label for="current_password" class="form-label">Password Saat Ini</label>
                             <div class="input-group">
                                 <span class="input-group-text bg-light">
                                     <i class="bi bi-lock-fill text-muted"></i>
                                 </span>
-                                <input type="password" name="current_password" class="form-control" 
+                                <input type="password" name="current_password" class="form-control"
                                        placeholder="Masukkan password saat ini" required>
                             </div>
                             @error('current_password') <div class="text-danger small">{{ $message }}</div> @enderror
@@ -171,7 +171,7 @@
                                 <span class="input-group-text bg-light">
                                     <i class="bi bi-key-fill text-muted"></i>
                                 </span>
-                                <input type="password" name="new_password" class="form-control" 
+                                <input type="password" name="new_password" class="form-control"
                                        placeholder="Minimal 8 karakter" required>
                             </div>
                             @error('new_password') <div class="text-danger small">{{ $message }}</div> @enderror
@@ -183,7 +183,7 @@
                                 <span class="input-group-text bg-light">
                                     <i class="bi bi-key-fill text-muted"></i>
                                 </span>
-                                <input type="password" name="new_password_confirmation" class="form-control" 
+                                <input type="password" name="new_password_confirmation" class="form-control"
                                        placeholder="Ketik ulang password baru" required>
                             </div>
                         </div>
@@ -232,30 +232,30 @@
         -webkit-text-fill-color: transparent;
         display: inline-block;
     }
-    
+
     .cursor-pointer {
         cursor: pointer;
     }
-    
+
     .card {
         border-radius: 12px;
         overflow: hidden;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
-    
+
     .card:hover {
         transform: translateY(-5px);
         box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
     }
-    
+
     .input-group-text {
         transition: all 0.3s ease;
     }
-    
+
     .form-control:focus + .input-group-text {
         background-color: #e9ecef;
     }
-    
+
     @media (max-width: 768px) {
         .card-body {
             padding: 1.25rem;
@@ -268,7 +268,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Preview image sebelum upload
     const fotoUpload = document.getElementById('fotoUpload');
     const profileImage = document.getElementById('profileImage');
-    
+
     if (fotoUpload && profileImage) {
         fotoUpload.addEventListener('change', function(e) {
             const file = e.target.files[0];

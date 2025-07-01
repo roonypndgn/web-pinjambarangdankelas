@@ -20,6 +20,7 @@ class UserSeeder extends Seeder
             'alamat'=>'Jl. Admin No. 1',
             'telepon'=>'08123456789',
             'email'=>'admin@example.com',
+            'nim_nip'=>'123456789',
             'password'=>Hash::make('admin123'),
             'jenis'=>'admin'
         ],
@@ -27,6 +28,7 @@ class UserSeeder extends Seeder
             'alamat'=>'Jl. Member No. 1',
             'telepon'=>'08123456789',
             'email'=>'member@example.com',
+            'nim_nip'=>'987654321',
             'password'=>Hash::make('member123'),
             'jenis'=>'member'
             ]
