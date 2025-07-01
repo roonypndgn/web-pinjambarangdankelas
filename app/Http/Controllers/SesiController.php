@@ -14,16 +14,16 @@ class SesiController extends Controller
     }
     function login(Request $request){
         $request->validate([
-            'email' => 'required|email',
+            'nim_nip' => 'required|numeric',
             'password' => 'required',
         ], [
-            'email.required' => 'Email tidak boleh kosong!',
-            'email.email' => 'Format email tidak valid!',
+            'nim_nip.required' => 'Masukkan NIM atau NIP tidak boleh kosong!',
+            'nim_nip.numeric' => 'NIM atau NIP harus berupa angka!',
             'password.required' => 'Password tidak boleh kosong!',
         ]);
 
         $infologin=[
-            'email' => $request->email,
+            'nim_nip' => $request->nim_nip,
             'password' => $request->password,
         ];
         if(Auth::attempt($infologin)){
@@ -31,7 +31,7 @@ class SesiController extends Controller
                 return redirect()->route('admin.dashboard');
             }elseif(Auth::user()->jenis =='member'){
                 return redirect()->route('member.dashboard.index');
-            }    
+            }
         }else{
             return redirect('')->withErrors('Username dan password salah')->withInput();
         }

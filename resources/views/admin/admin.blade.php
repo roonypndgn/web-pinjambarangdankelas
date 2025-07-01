@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Admin Peminjaman Buku</title>
+  <title>Admin Peminjaman Barang</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
   <style>
@@ -99,22 +99,22 @@
         <div class="col-md-6 col-lg-4">
           <div class="card card-custom p-4 text-center">
             <div class="card-icon mb-2"><i class="bi bi-book"></i></div>
-            <h5>Total Buku</h5>
-            <p class="text-muted">150 Buku</p>
+            <h5>Total Barang</h5>
+            <p class="text-muted">150 Barang</p>
           </div>
         </div>
         <div class="col-md-6 col-lg-4">
           <div class="card card-custom p-4 text-center">
             <div class="card-icon mb-2"><i class="bi bi-hourglass-split"></i></div>
             <h5>Dipinjam</h5>
-            <p class="text-muted">35 Buku</p>
+            <p class="text-muted">35 Barang</p>
           </div>
         </div>
         <div class="col-md-6 col-lg-4">
           <div class="card card-custom p-4 text-center">
             <div class="card-icon mb-2"><i class="bi bi-arrow-return-left"></i></div>
             <h5>Belum Dikembalikan</h5>
-            <p class="text-muted">12 Buku</p>
+            <p class="text-muted">12 Barang</p>
           </div>
         </div>
       </div>

@@ -26,7 +26,8 @@ class MemberController extends Controller
             'nama' => 'required|string|max:255',
             'alamat' => 'nullable|string',
             'telepon' => 'nullable|string|max:20',
-            'email' => 'required|unique:users',
+            'email' => 'nullable|unique:users',
+            'nim_nip' => 'required|string|max:20|unique:users',
             'password' => 'required|string|min:6',
         ]);
 
@@ -35,6 +36,7 @@ class MemberController extends Controller
             'alamat' => $request->alamat,
             'telepon' => $request->telepon,
             'email' => $request->email,
+            'nim_nip' => $request->nim_nip,
             'password' => Hash::make($request->password),
             'jenis' => 'member',
         ]);
@@ -53,8 +55,9 @@ class MemberController extends Controller
             'nama' => 'required|string|max:255',
             'alamat' => 'nullable|string',
             'telepon' => 'nullable|string|max:20',
-            'email' => 'required|email|unique:users,email,' . $member->id,
-            'password' => 'nullable|string|min:6',
+            'email' => 'nullable|email|unique:users,email,' . $member->id,
+            'nim_nip' => 'required|string|max:20|unique:users,nim_nip,' . $member->id,
+            'password' => 'required|string|min:6',
         ]);
 
         $member->update([
@@ -62,6 +65,7 @@ class MemberController extends Controller
             'alamat' => $request->alamat,
             'telepon' => $request->telepon,
             'email' => $request->email,
+            'nim_nip' => $request->nim_nip,
             'password' => $request->filled('password') ? Hash::make($request->password) : $member->password,
         ]);
 
