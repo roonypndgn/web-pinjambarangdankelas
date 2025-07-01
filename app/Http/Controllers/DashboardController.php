@@ -13,7 +13,7 @@ class DashboardController extends Controller
     public function index()
     {
         // 1. Jumlah Barang
-        $totalBarang = Barang::count();
+        $totalBarang = Barang::sum('jumlah');
 
         // 2. Jumlah Member
         $totalMember = User::where('jenis', 'member')->count();

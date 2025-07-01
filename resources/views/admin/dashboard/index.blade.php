@@ -10,7 +10,7 @@
   <div class="row">
     @php
       $cards = [
-        ['title' => 'Total Barang', 'count' => $totalBarang, 'icon' => 'fa-boxes', 'color' => 'primary'],
+        ['title' => 'Total Barang Tersedia', 'count' => $totalBarang, 'icon' => 'fa-boxes', 'color' => 'primary'],
         ['title' => 'Total Member', 'count' => $totalMember, 'icon' => 'fa-users', 'color' => 'success'],
         ['title' => 'Peminjaman Aktif', 'count' => $totalPeminjamanBerlangsung, 'icon' => 'fa-clipboard-list', 'color' => 'info'],
         ['title' => 'Total Pengembalian', 'count' => $totalPengembalian, 'icon' => 'fa-exchange-alt', 'color' => 'warning'],
