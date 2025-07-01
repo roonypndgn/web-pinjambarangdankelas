@@ -207,9 +207,9 @@
                         <select class="form-select select2" id="barang_id" name="barang_id" required>
                             <option value="">-- Pilih Barang --</option>
                             @foreach($barangs as $barang)
-                                <option value="{{ $barang->id }}" {{ $barang->status != 'tersedia' ? 'disabled' : '' }}>
-                                    {{ $barang->merk }} ({{ $barang->kode_barang }})
-                                    {{ $barang->status != 'tersedia' ? '(Tidak Tersedia)' : '' }}
+                                <option value="{{ $barang->id }}" {{ $barang->jumlah < 1 ? 'disabled' : '' }}>
+                                    {{ $barang->merk }}
+                                    {{ $barang->jumlah < 1 ? '(Tidak Tersedia)' : '(Stok: '.$barang->jumlah.')' }}
                                 </option>
                             @endforeach
                         </select>

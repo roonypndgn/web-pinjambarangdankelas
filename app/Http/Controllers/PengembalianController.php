@@ -28,7 +28,7 @@ class PengembalianController extends Controller
             'tgl_kembali' => 'required|date',
             'time_kembali' => 'required'
         ]);
-
+        
         // Buat pengembalian
         $pengembalian = Pengembalian::create($request->all());
 
@@ -36,10 +36,15 @@ class PengembalianController extends Controller
         Pinjam::where('id', $request->pinjam_id)
             ->update(['status' => 'selesai']);
 
-        // Update status barang
+        // Update stok dan status barang
         $pinjam = Pinjam::find($request->pinjam_id);
-        $pinjam->barang()->update(['status' => 'tersedia']);
+        $barang = $pinjam->barang;
+        $barang->increment('jumlah');
 
+        // Jika stok > 0, ubah status ke 'tersedia'
+        if ($barang->jumlah > 0) {
+            $barang->update(['status' => 'tersedia']);
+        }
         return redirect()->route('admin.pengembalian.index')
             ->with('success', 'Pengembalian berhasil dicatat');
     }
