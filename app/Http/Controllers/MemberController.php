@@ -57,7 +57,7 @@ class MemberController extends Controller
             'telepon' => 'nullable|string|max:20',
             'email' => 'nullable|email|unique:users,email,' . $member->id,
             'nim_nip' => 'required|string|max:20|unique:users,nim_nip,' . $member->id,
-            'password' => 'required|string|min:6',
+            'password' => 'nullable|string|min:6',
         ]);
 
         $member->update([
@@ -74,7 +74,7 @@ class MemberController extends Controller
 
     public function destroy(User $member)
     {
-        $member->delete();
+        $member->forceDelete();
        return redirect()->route('admin.member.index')->with('success', 'Member berhasil dihapus!');
     }
 }

@@ -102,8 +102,7 @@
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const ctx = document.getElementById('peminjamanChart').getContext('2d');
-    const data = @json(array_values($grafikPeminjaman));
-
+    const data = <?php echo json_encode(array_values($grafikPeminjaman)); ?>;
     const chart = new Chart(ctx, {
       type: 'line',
       data: {
